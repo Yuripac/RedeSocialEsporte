@@ -1,7 +1,7 @@
 class Api::V1::ApiController < ActionController::Base
 
   protect_from_forgery with: :null_session
-  
+
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   def authenticate
@@ -11,16 +11,14 @@ class Api::V1::ApiController < ActionController::Base
     failure(error: "x-api-key is wrong") unless @user
   end
 
-  def success(status: :ok, json: {})
-    options = { status: status, json: json }
-
-    render options
+  def success(opts = {})
+    options = { status: :ok, json: {} }
+    render options.deep_merge(opts)
   end
 
-  def failure(status: :unauthorized, error: {})
-    options = { status: status, json: error }
-
-    render options
+  def failure(opts = {})
+    options = { status: :unauthorized, json: {} }
+    render options.deep_merge(opts)
   end
 
   def not_found

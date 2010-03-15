@@ -8,9 +8,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   # GET /api/v1/groups
   def index
     groups = Group.includes(:sport, :activity)
-
-    success(json: groups.to_json(include: [:sport, :activity],
-                                 methods: :admin_ids))
+    success(json: groups)
   end
 
   # POST /api/v1/groups
@@ -29,20 +27,18 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1
   def show
-    success(json: @group.to_json(include: [:sport, :activity],
-                                 methods: :admin_ids))
+    success(json: @group)
   end
 
   # GET /api/v1/groups/my
   def my
     groups = @user.membership_groups.includes(:sport, :activity)
-
-    success(json: groups.to_json(include: [:sport, :activity],
-                                 methods: :admin_ids))
+    success
   end
 
+  # GET /api/v1/groups/:id/members
   def members
-    success(json: @group.members.to_json(except: "api_key", include: :sport))
+    success(json: @group.members, root: :users)
   end
 
   # GET /api/v1/groups/1/join

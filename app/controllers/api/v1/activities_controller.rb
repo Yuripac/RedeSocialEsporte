@@ -25,7 +25,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # GET api/v1/groups/:id/activity/participants
   def participants
-    success(json: @activity.participants.to_json(except: "api_key", include: :sport))
+    success(json: @activity.participants, root: :users)
   end
 
   # GET api/v1/groups/:id/activity/join

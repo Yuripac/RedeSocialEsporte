@@ -1,0 +1,24 @@
+<%= form_for(User.new, url: users_login_path) do |f|%>
+  <p id='alert'><%= alert %></p>
+
+  <table>
+    <div class='field'>
+      <tr>
+        <td><%= f.label :email%></td>
+        <td><%= f.text_field :email%></td>
+      </tr>
+    </div>
+    <div class='field'>
+      <tr>
+        <td><%= f.label :password%></td>
+        <td><%= f.password_field :password%></td>
+      </tr>
+    </div>
+
+    <div class='action'>
+      <tr>
+        <td><%= f.submit :login%></td>
+      </tr>
+    </div>
+  </table>
+<% end %>

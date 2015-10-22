@@ -1,0 +1,16 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <h2>Name:</h2>
+  <%= group.name %>
+</p>
+
+<p>
+  <h2>Description:</h2>
+  <%= group.description %>
+</p>
+<%= link_to 'Show', group %>
+<% if current_user == group.user %>
+|<%= link_to 'Edit', edit_group_path(group) %>
+|<%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end%>

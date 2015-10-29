@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_user, only: [:new, :create, :edit, :update, :destroy]
 
   # GET /groups
   # GET /groups.json
@@ -10,6 +10,7 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
+    set_group
   end
 
   # GET /groups/new
@@ -19,6 +20,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
+    @group = current_user.groups.find(params[:id])
   end
 
   # POST /groups
@@ -28,7 +30,8 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        format.html { redirect_to @group, notice: 'Group was successfully created.' }
+        #format.html { redirect_to @group, notice: 'Group was successfully created.' }
+        format.html { redirect_to user_groups_join_path(group: @group, owner: true) }
         format.json { render :show, status: :created, location: @group }
       else
         format.html { render :new }
@@ -40,6 +43,7 @@ class GroupsController < ApplicationController
   # PATCH/PUT /groups/1
   # PATCH/PUT /groups/1.json
   def update
+    @group = current_user.groups.find(params[:id])
     respond_to do |format|
       if @group.update(group_params)
         format.html { redirect_to @group, notice: 'Group was successfully updated.' }
@@ -54,7 +58,9 @@ class GroupsController < ApplicationController
   # DELETE /groups/1
   # DELETE /groups/1.json
   def destroy
+    @group = current_user.groups.find(params[:id])
     @group.destroy
+
     respond_to do |format|
       format.html { redirect_to groups_url, notice: 'Group was successfully destroyed.' }
       format.json { head :no_content }
@@ -62,13 +68,20 @@ class GroupsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_group
-      @group = Group.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def group_params
-      params.require(:group).permit(:name, :description)
+  def authorize_user
+    if current_user == nil
+      redirect_to root_path, alert: 'You need to be Logged to do that.'
     end
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_group
+    @group = Group.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def group_params
+    params.require(:group).permit(:name, :description, :sport)
+  end
 end

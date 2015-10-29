@@ -1,15 +1,19 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
+
   root 'home#index'
 
+  get  "/user/groups/join", to: 'members#join'
+  get  "/user/groups",      to: 'members#index'
 
-  get  "/users/login", to: 'login#new'
-  post "/users/login", to: 'login#create'
+  get  "/users/login",      to: 'login#new'
+  post "/users/login",      to: 'login#create'
 
   resources :groups
-  resources :users#, only: [:new :edit]
+
+  resources :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 

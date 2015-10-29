@@ -1,8 +1,11 @@
 class Group < ActiveRecord::Base
-  belongs_to :user
 
-  has_many :user_groups
-  has_many :users, through: :user_groups
+  has_many :members
+  has_many :users, through: :members
 
-  validates_presence_of :name, :description
+  validates_presence_of :name, :description, :sport
+
+  def owner
+    members.where(owner: true).first.user
+  end
 end

@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
 
-  has_many :groups
-  has_many :user_groups
+  has_many :members
+  has_many :groups, through: :members
 
-  validates_presence_of :email, :name, :encrypted_password
+  validates_presence_of :email, :name, :password
   validates_uniqueness_of :email
 
   def password

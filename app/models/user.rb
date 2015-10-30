@@ -6,6 +6,10 @@ class User < ActiveRecord::Base
   validates_presence_of :email, :name, :password
   validates_uniqueness_of :email
 
+  def my_groups
+    members.where(owner: true)
+  end
+
   def password
     @password
   end

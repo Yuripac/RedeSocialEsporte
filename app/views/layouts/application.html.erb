@@ -14,7 +14,7 @@
     <div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
       <ul id="app-menu"class="nav navbar-nav pull-right">
       <% if current_user %>
-        <li><%= link_to 'My Groups', user_groups_path %></li>
+        <li><%= link_to 'My Groups', my_groups_path %></li>
         <li><%= link_to "New group", new_group_path %></li>
         <li><%= link_to "Groups", groups_path %></li>
         <li><%= link_to "Logout" %></li>

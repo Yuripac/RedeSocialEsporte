@@ -3,13 +3,13 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  get  "/user/groups/join", to: 'members#join'
-  get  "/user/groups",      to: 'members#index'
-
   get  "/users/login",      to: 'login#new'
   post "/users/login",      to: 'login#create'
 
-  resources :groups
+  resources :groups do
+    get 'my', on: :collection
+    get 'join', on: :member
+  end
 
   resources :users
   # The priority is based upon order of creation: first created -> highest priority.

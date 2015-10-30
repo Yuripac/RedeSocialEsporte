@@ -13,5 +13,5 @@
 <% end%>
 
 <% unless group.users.include?(current_user)%>
-  <%= link_to 'Join', {controller: "members", action: "join", group: group}%>
+  <%= link_to 'Join', join_group_path(group) %>
 <% end %>

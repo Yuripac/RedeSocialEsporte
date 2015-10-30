@@ -1,5 +1,6 @@
 class GroupsController < ApplicationController
   before_action :authorize_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_group, only: [:join, :show]
 
   # GET /groups
   # GET /groups.json
@@ -7,10 +8,27 @@ class GroupsController < ApplicationController
     @groups = Group.all
   end
 
+  # Get /groups/my
+  def my
+    @groups = current_user.groups
+  end
+
+  # GET /groups/1/join
+  def join
+    @member = Member.new(user: current_user, group: @group, owner: false)
+
+    if @member.save
+      flash[:notice] = "Joined"
+    else
+      flash[:alert] = "You can't join"
+    end
+
+    redirect_to groups_path
+  end
+
   # GET /groups/1
   # GET /groups/1.json
   def show
-    set_group
   end
 
   # GET /groups/new
@@ -26,12 +44,13 @@ class GroupsController < ApplicationController
   # POST /groups
   # POST /groups.json
   def create
-    @group = current_user.groups.build(group_params)
+    @group  = Group.new(group_params)
+    @member = Member.new(user: current_user, group: @group, owner: true)
 
     respond_to do |format|
       if @group.save
-        #format.html { redirect_to @group, notice: 'Group was successfully created.' }
-        format.html { redirect_to user_groups_join_path(group: @group, owner: true) }
+        @member.save
+        format.html { redirect_to @group, notice: 'Group was successfully created.' }
         format.json { render :show, status: :created, location: @group }
       else
         format.html { render :new }

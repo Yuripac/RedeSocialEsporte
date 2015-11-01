@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
-  has_many :members
-  has_many :groups, through: :members
+  has_many :members, dependent: :destroy
+  has_many :groups, through: :members, dependent: :destroy
 
   validates_presence_of :email, :name, :password
   validates_uniqueness_of :email

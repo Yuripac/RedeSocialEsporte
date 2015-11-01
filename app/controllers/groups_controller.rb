@@ -1,16 +1,16 @@
 class GroupsController < ApplicationController
-  before_action :authorize_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :authorize_user, only: [:new, :create, :edit, :update, :destroy, :join, :my]
   before_action :set_group, only: [:join, :show]
 
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.includes(:users).all
+    @groups = Group.includes(:users, :user).all
   end
 
   # Get /groups/my
   def my
-    #@groups = current_user.members.groups
+    @groups = current_user.groups
   end
 
   # GET /groups/1/join
@@ -33,18 +33,18 @@ class GroupsController < ApplicationController
 
   # GET /groups/new
   def new
-    @group = current_user.groups.build
+    @group = current_user.created_groups.build
   end
 
   # GET /groups/1/edit
   def edit
-    @group = current_user.groups.find(params[:id])
+    @group = current_user.created_groups.find(params[:id])
   end
 
   # POST /groups
   # POST /groups.json
   def create
-    @group  = current_user.groups.build(group_params)
+    @group  = current_user.created_groups.build(group_params)
 
     respond_to do |format|
       if @group.save

@@ -1,14 +1,12 @@
 class User < ActiveRecord::Base
 
-  has_many :members
-  has_many :groups, through: :members
+  #has_many :members, dependent: :destroy
+  #has_many :groups, through: :members
+
+  has_many :created_groups, class_name: "Group", foreign_key: "user_id"
 
   validates_presence_of :email, :name, :password
   validates_uniqueness_of :email
-
-  def my_groups
-    members.where(owner: true)
-  end
 
   def password
     @password

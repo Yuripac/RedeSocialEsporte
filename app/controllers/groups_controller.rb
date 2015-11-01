@@ -10,7 +10,7 @@ class GroupsController < ApplicationController
 
   # Get /groups/my
   def my
-    @groups = current_user.groups
+    #@groups = current_user.members.groups
   end
 
   # GET /groups/1/join
@@ -44,7 +44,7 @@ class GroupsController < ApplicationController
   # POST /groups
   # POST /groups.json
   def create
-    @group  = Group.new(group_params)
+    @group  = current_user.groups.build(group_params)
 
     respond_to do |format|
       if @group.save

@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  has_many :members, dependent: :destroy
+  has_many :members
   has_many :groups, through: :members
 
   has_many :created_groups, class_name: "Group", foreign_key: "user_id", dependent: :destroy

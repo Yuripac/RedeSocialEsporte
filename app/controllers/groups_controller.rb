@@ -1,5 +1,7 @@
 class GroupsController < ApplicationController
-  before_action :authorize_user, only: [:new, :create, :edit, :update, :destroy, :join, :my]
+  before_action :authorize_user, only: [
+    :new, :create, :edit, :update, :destroy, :join, :unjoin, :my
+  ]
   before_action :set_group, only: [:join, :show]
 
   # GET /groups
@@ -10,7 +12,7 @@ class GroupsController < ApplicationController
 
   # Get /groups/my
   def my
-    @groups = current_user.groups
+    @groups = current_user.groups.includes(:users, :user)
   end
 
   # GET /groups/1/join
@@ -24,6 +26,10 @@ class GroupsController < ApplicationController
     end
 
     redirect_to groups_path
+  end
+
+  # GET /groups/1/unjoin
+  def unjoin
   end
 
   # GET /groups/1

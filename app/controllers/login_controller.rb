@@ -4,6 +4,11 @@ class LoginController < ApplicationController
   def new
   end
 
+  def logout
+    session.clear
+    redirect_to root_path, notice: "disconnected"
+  end
+
   def create
     user = User.find_by_email(params[:user][:email])
 

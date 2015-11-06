@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
+  get  "/users/logout",     to: 'login#logout'
   get  "/users/login",      to: 'login#new'
   post "/users/login",      to: 'login#create'
 

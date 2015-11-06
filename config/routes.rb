@@ -3,9 +3,9 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  get  "/users/logout",     to: 'login#logout'
-  get  "/users/login",      to: 'login#new'
-  post "/users/login",      to: 'login#create'
+  get  "/auth/:provider/callback", to: 'login#create', as: 'auth_callback'
+  get "/auth/failure", to: 'login#failure', as: 'auth_failure'
+  get  "/logout", to: 'login#destroy', as: 'logout'
 
   resources :groups do
     get 'my', on: :collection

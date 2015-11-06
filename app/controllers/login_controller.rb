@@ -1,30 +1,23 @@
 class LoginController < ApplicationController
-  before_action :not_authorize_user, only: [:new, :create]
-
-  def new
-  end
-
-  def logout
-    session.clear
-    redirect_to root_path, notice: "disconnected"
-  end
 
   def create
-    user = User.find_by_email(params[:user][:email])
+    auth = request.env['omniauth.auth']
 
-    if user && user.valid_password?(params[:user][:password])
-      session[:user_id] = user.id
-      redirect_to root_path
-    else
-      flash.now[:alert] = "E-mail or password is wrong."
-      render :new
-    end
+    user = User.find_or_create_with_omniauth(auth)
+
+    session[:user_id] = user.id
+
+    redirect_to root_path, notice: 'You are logged'
   end
 
-  def not_authorize_user
-    unless current_user.nil?
-      redirect_to root_path, alert: "You are already logged."
-    end
+  def failure
+    redirect_to root_path
+  end
+
+
+  def destroy
+    session.clear
+    redirect_to root_path notice: 'Bye bye'
   end
 
 end

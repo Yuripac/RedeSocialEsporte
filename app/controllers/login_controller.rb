@@ -17,7 +17,7 @@ class LoginController < ApplicationController
 
   def destroy
     session.clear
-    redirect_to root_path notice: 'Bye bye'
+    redirect_to root_path, notice: 'Bye bye'
   end
 
 end

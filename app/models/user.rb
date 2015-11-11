@@ -5,10 +5,17 @@ class User < ActiveRecord::Base
 
   has_many :created_groups, class_name: "Group", foreign_key: "user_id", dependent: :destroy
 
+  validates_presence_of :name, :email, :access_token, :provider
+
   def self.find_or_create_with_omniauth(auth)
     user = self.find_or_create_by(provider: auth.provider, uid: auth.uid)
     user.assign_attributes({name: auth.info.name, email: auth.info.email, access_token: auth.credentials.token })
-    user.save
+    user
+  end
+
+  def self.find_or_create_with_api(id, data)
+    user = self.find_or_create_by(provider: data[:provider], uid: id)
+    user.assign_attributes({name: data[:name], email: data[:email], access_token: data[:access_token] })
     user
   end
 

@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
   before_action :authorize_user, only: [
-    :new, :create, :edit, :update, :destroy, :join, :unjoin, :my
+    :index, :new, :create, :edit, :update, :destroy, :join, :unjoin, :my
   ]
   before_action :set_group, only: [:join, :show]
 
@@ -10,7 +10,7 @@ class GroupsController < ApplicationController
     @groups = Group.includes(:users, :user).all
   end
 
-  # Get /groups/my
+  # GET /groups/my
   def my
     @groups = current_user.groups.includes(:users, :user)
   end

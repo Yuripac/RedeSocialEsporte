@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151106185104) do
+ActiveRecord::Schema.define(version: 20151116141951) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(version: 20151106185104) do
   create_table "members", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean  "owner"
     t.integer  "user_id"
     t.integer  "group_id"
   end
@@ -54,9 +53,9 @@ ActiveRecord::Schema.define(version: 20151106185104) do
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.string   "email"
-    t.string   "access_token"
     t.string   "uid"
     t.string   "provider"
+    t.string   "api_key"
   end
 
 end

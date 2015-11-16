@@ -1,7 +1,6 @@
 class GroupsController < ApplicationController
-  before_action :authorize_user, only: [
-    :index, :new, :create, :edit, :update, :destroy, :join, :unjoin, :my
-  ]
+  before_action :authorize_user, except: [:show, :index]
+
   before_action :set_group, only: [:join, :show]
 
   # GET /groups
@@ -17,7 +16,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/join
   def join
-    @member = Member.new(user: current_user, group: @group, owner: false)
+    @member = Member.new(user: current_user, group: @group)
 
     if @member.save
       flash[:notice] = "Joined"
@@ -54,8 +53,6 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        @member = Member.new(user: current_user, group: @group, owner: true)
-        @member.save
         format.html { redirect_to @group, notice: 'Group was successfully created.' }
         format.json { render :show, status: :created, location: @group }
       else

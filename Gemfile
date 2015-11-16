@@ -51,8 +51,12 @@ end
 
 gem 'bootstrap-sass', '~> 3.2.0'
 
+# Dashboard and stuff
 gem 'activeadmin', github: 'activeadmin'
 
+# Facebook auth
 gem 'omniauth'
-
 gem 'omniauth-facebook'
+
+# Facebook API Graph to get information about user
+gem 'koala', '~> 2.2'

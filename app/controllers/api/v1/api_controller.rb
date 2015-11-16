@@ -5,38 +5,39 @@ class Api::V1::ApiController < ActionController::Base
 
   protect_from_forgery with: :null_session
 
-  # Must returns user's id from facebook if access_token is valid.
-  def id_by_token
-    json_result = check_access_token
+  def authenticate
+    api_key = params[:api_key]
+    @user = User.where(api_key: api_key).first if api_key
 
-    return json_result[:id] if json_result[:error].nil?
-
-    failure(json_result)
+    unless @user
+      failure(json: {info: "That user not exists"})
+      return false
+    end
   end
 
-  def check_access_token
-    uri = open("https://graph.facebook.com/me?access_token=#{params[:access_token]}").read
-    JSON.parse(uri, symbolize_names: true)
+  def success(options = {})
+    default = { status: :ok, json: { success: true } }
+    options = default.deep_merge(options)
+
+    response_base(options)
   end
 
-  #def success
-  #end
+  def failure(options = {})
+    default = { status: :unauthorized, json: { success: false } }
+    options = default.deep_merge(options)
 
-  def failure(errors)
-    render status: :unauthorized, json: { success: false,
-                                          data: {},
-                                          info: '',
-                                          error: errors
-                                        }
+    response_base(options)
   end
 
-  def is_logged_in?
-    @user = User.find_by(access_token: params[:access_token])
-    !@user.nil?
-  end
+  private
 
-  # Must control passed params
-  #def api_params
-  #end
+  def response_base(options)
+    default_options = {
+      status: '', json: { success: '', data: {}, info: '', error: {} }
+    }
+    options = default_options.deep_merge(options)
+
+    render options
+  end
 
 end

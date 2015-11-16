@@ -1,25 +1,40 @@
 Rails.application.routes.draw do
+
   ActiveAdmin.routes(self)
 
   root 'home#index'
 
+  # Routes to login with a provider
   get "/auth/:provider/callback", to: 'login#create', as: 'auth_callback'
   get "/auth/failure", to: 'login#failure', as: 'auth_failure'
   delete "/logout", to: 'login#destroy', as: 'logout'
 
+  # Groups
   resources :groups do
     get 'my', on: :collection
     get 'join', on: :member
+    get 'unjoin', on: :member
   end
+
+  # Users
+  resources :users, except: [:index]
+
+  #---------------API----------------------------
 
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
+      # Login and Logout
       post 'login', to: 'login#create', as: 'login'
-      delete 'logout', to: 'login#destroy', as: 'logout'
+
+      # Groups
+      resources :groups, except: [:new, :edit] do
+        get 'my', on: :collection
+        get 'join', on: :member
+        get 'unjoin', on: :member
+      end
     end
   end
 
-  resources :users, except: [:index]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   # You can have the root of your site routed with "root"

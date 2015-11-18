@@ -16,7 +16,6 @@ class User < ActiveRecord::Base
     user.assign_attributes({
       name: auth.info.name,
       email: auth.info.email,
-  #    access_token: auth.credentials.token
     })
     user
   end

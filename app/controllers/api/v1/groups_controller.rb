@@ -12,6 +12,11 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /groups/1
   def show
+    if @group
+      success(json: {data: @group.attributes})
+    else
+      failure(json: {info: 'Group not exists'})
+    end
   end
 
   # GET /groups/my
@@ -46,7 +51,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_group
-    @group = Group.find(params[:id])
+    @group = Group.find_by_id(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

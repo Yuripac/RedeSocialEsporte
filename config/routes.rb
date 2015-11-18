@@ -23,12 +23,12 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
-      # Login and Logout
+      # Login
       post 'login', to: 'login#create', as: 'login'
 
       # Groups
       resources :groups, except: [:new, :edit] do
-        get 'my', on: :collection
+        post 'my', on: :collection
         get 'join', on: :member
         get 'unjoin', on: :member
       end

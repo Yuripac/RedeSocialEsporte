@@ -10,7 +10,7 @@ class Api::V1::ApiController < ActionController::Base
     @user = User.where(api_key: api_key).first if api_key
 
     unless @user
-      failure(json: {info: "That user not exists"})
+      failure(json: {info: "User not exists"})
       return false
     end
   end

@@ -15,7 +15,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     if @group
       success(json: {data: @group.attributes})
     else
-      failure(json: {info: 'Group not exists'})
+      failure(status: 404, json: {info: 'Group not exists'})
     end
   end
 

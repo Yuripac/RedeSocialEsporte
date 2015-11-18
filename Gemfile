@@ -60,3 +60,5 @@ gem 'omniauth-facebook'
 
 # Facebook API Graph to get information about user
 gem 'koala', '~> 2.2'
+
+gem 'rails_12factor', group: :production

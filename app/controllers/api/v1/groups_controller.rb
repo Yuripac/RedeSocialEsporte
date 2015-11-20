@@ -21,7 +21,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /groups/my
   def my
-    # Must be @user.groups
     groups = @user.groups
     groups_attributes = groups.map {|group| group.attributes}
     success(json: {data: groups_attributes})

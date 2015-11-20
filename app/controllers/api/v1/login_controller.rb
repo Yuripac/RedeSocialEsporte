@@ -1,26 +1,39 @@
+require 'json'
+
 class Api::V1::LoginController < Api::V1::ApiController
+
+  before_action :set_user
 
   respond_to :json
 
   # POST  /api/v1/login
-  # Must checks the access_token authenticity and log in a user
   def create
+    if @user.save
+      success(json: { info: 'Logged in', data: {api_key: @user.api_key}})
+    else
+      failure(json: { error: @user.errors.messages })
+    end
+  end
+
+  private
+
+  def set_user
+    begin
+      id = data['id']
+      @user = User.find_or_create_with_api(id, params)
+    rescue Koala::Facebook::APIError => e
+      failure(status: :bad_request)
+    end
+  end
+
+  # request user's data from facebook
+  def data
     access_token = params[:access_token]
     data = User.koala(access_token)
+  end
 
-    # If access token is expired must return error.
-    if data[:error].nil?
-      user = User.find_or_create_with_api(data['id'], params)
-
-      if user.save
-        success(json: { info: 'Logged in', data: {api_key: user.api_key}})
-      else
-        failure(json: { error: user.errors.messages })
-      end
-    else
-      failure(json: { error: data[:error] })
-    end
-
+  def exception_facebook
+    failure(status: :bad_request)
   end
 
 end

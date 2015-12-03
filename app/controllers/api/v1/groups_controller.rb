@@ -6,8 +6,8 @@ class Api::V1::GroupsController < Api::V1::ApiController
   # GET /groups
   def index
     groups = Group.all
-    groups_attributes = groups.map {|group| group.attributes}
-    success(json: {data: groups_attributes})
+    groups_attributes = groups.map { |group| group.attributes }
+    success(json: { data: groups_attributes })
   end
 
   # POST /groups
@@ -16,7 +16,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     if group.save
       success(status: :created, json: { info: "Group was created" })
     else
-      failure(status: 400, json: { error: group.errors.messages })
+      failure
     end
   end
 
@@ -25,14 +25,14 @@ class Api::V1::GroupsController < Api::V1::ApiController
     if @group
       success(json: { data: @group.attributes })
     else
-      failure(status: 404, json: { info: 'Group not exists' })
+      failure(status: 404)
     end
   end
 
   # POST /groups/my
   def my
     groups = @user.groups
-    groups_attributes = groups.map {|group| group.attributes}
+    groups_attributes = groups.map { |group| group.attributes }
     success(json: { data: groups_attributes })
   end
 

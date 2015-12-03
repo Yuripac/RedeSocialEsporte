@@ -10,20 +10,30 @@ class Api::V1::GroupsController < Api::V1::ApiController
     success(json: {data: groups_attributes})
   end
 
-  # GET /groups/1
-  def show
-    if @group
-      success(json: {data: @group.attributes})
+  # POST /groups
+  def create
+    group = @user.created_groups.build(group_params)
+    if group.save
+      success(status: :created, json: { info: "Group was created" })
     else
-      failure(status: 404, json: {info: 'Group not exists'})
+      failure(status: 400, json: { error: group.errors.messages })
     end
   end
 
-  # GET /groups/my
+  # GET /groups/1
+  def show
+    if @group
+      success(json: { data: @group.attributes })
+    else
+      failure(status: 404, json: { info: 'Group not exists' })
+    end
+  end
+
+  # POST /groups/my
   def my
     groups = @user.groups
     groups_attributes = groups.map {|group| group.attributes}
-    success(json: {data: groups_attributes})
+    success(json: { data: groups_attributes })
   end
 
   # GET /groups/1/join
@@ -32,10 +42,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /groups/1/unjoin
   def unjoin
-  end
-
-  # POST /groups
-  def create
   end
 
   # PATCH/PUT /groups/1

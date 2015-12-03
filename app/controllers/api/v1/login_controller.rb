@@ -19,17 +19,17 @@ class Api::V1::LoginController < Api::V1::ApiController
 
   def set_user
     begin
-      id = data['id']
+      id = graph['id']
       @user = User.find_or_create_with_api(id, params)
     rescue Koala::Facebook::APIError => e
       failure(status: :bad_request)
     end
   end
 
-  # request user's data from facebook
-  def data
+  # request user's graph from facebook
+  def graph
     access_token = params[:access_token]
-    data = User.koala(access_token)
+    User.koala(access_token)
   end
 
   def exception_facebook

@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
       # Groups
       resources :groups, except: [:new, :edit] do
-        post 'my', on: :collection
+        get 'my', on: :collection
         get 'join', on: :member
         get 'unjoin', on: :member
       end

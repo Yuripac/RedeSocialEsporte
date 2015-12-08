@@ -38,14 +38,13 @@ ActiveRecord::Schema.define(version: 20151116141951) do
   end
 
   create_table "members", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer  "user_id"
     t.integer  "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "members", ["group_id"], name: "index_members_on_group_id"
-  add_index "members", ["user_id"], name: "index_members_on_user_id"
+  add_index "members", ["user_id", "group_id"], name: "index_members_on_user_id_and_group_id", unique: true
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

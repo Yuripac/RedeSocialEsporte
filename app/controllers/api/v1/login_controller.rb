@@ -9,9 +9,10 @@ class Api::V1::LoginController < Api::V1::ApiController
   # POST  /api/v1/login
   def create
     if @user.save
-      success(json: { info: 'Logged in', data: {api_key: @user.api_key}})
-    else
-      failure(json: { error: @user.errors.messages })
+      response.headers['X-Api-Key'] = @user.api_key
+      success
+    else      
+      failure(status: :bad_request)
     end
   end
 

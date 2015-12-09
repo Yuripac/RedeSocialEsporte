@@ -1,6 +1,6 @@
 class Api::V1::GroupsController < Api::V1::ApiController
 
-  before_action :set_group, only: [:join, :show]
+  before_action :set_group, only: [:join, :show, :unjoin]
   before_action :authenticate, except: [:index, :show]
 
   # GET /groups
@@ -25,7 +25,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     if @group
       success(json: { data: @group.attributes })
     else
-      failure(status: 404)
+      failure(status: :not_found)
     end
   end
 
@@ -38,6 +38,17 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /groups/1/join
   def join
+    member = Member.new(user: @user, group: @group)
+
+    begin 
+      if member.save
+        success
+      else
+        failure
+      end
+    rescue ActiveRecord::RecordNotUnique => e
+      failure(status: :bad_request)
+    end
   end
 
   # GET /groups/1/unjoin
@@ -57,6 +68,11 @@ class Api::V1::GroupsController < Api::V1::ApiController
   # Use callbacks to share common setup or constraints between actions.
   def set_group
     @group = Group.find_by_id(params[:id])
+    
+    unless @group
+      failure(status: :not_found)
+      return false
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

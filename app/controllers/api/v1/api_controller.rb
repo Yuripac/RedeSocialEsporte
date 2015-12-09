@@ -19,8 +19,13 @@ class Api::V1::ApiController < ActionController::Base
     render options
   end
 
-  def failure(status = :unauthorized)
-    render status: status, nothing: true
+  def failure(options = {})
+    default = { status: :unauthorized }
+    options = default.merge(options)
+
+    options[:nothing] = true
+    
+    render options
   end
 
 end

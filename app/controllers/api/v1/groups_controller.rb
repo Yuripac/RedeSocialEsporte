@@ -49,6 +49,14 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /groups/1/unjoin
   def unjoin
+    member = Member.find_by(user: @user, group: @group)
+
+    if member
+      member.destroy
+      success
+    else
+      failure(status: :bad_request)
+    end    
   end
 
   # PATCH/PUT /groups/1

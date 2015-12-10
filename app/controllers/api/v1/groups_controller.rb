@@ -1,6 +1,6 @@
 class Api::V1::GroupsController < Api::V1::ApiController
 
-  before_action :set_group, only: [:join, :show, :unjoin]
+  before_action :set_group, only: [:join, :show, :unjoin, :update, :destroy]
   before_action :authenticate, except: [:index, :show]
 
   # GET /groups
@@ -29,7 +29,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     end
   end
 
-  # POST /groups/my
+  # GET /groups/my
   def my
     groups = @user.groups
     groups_attributes = groups.map { |group| group.attributes }
@@ -61,10 +61,22 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # PATCH/PUT /groups/1
   def update
+    if @user.created_groups.include?(@group)
+      @group.update(group_params) ? success : failure(status: :bad_request)      
+    else
+      failure
+    end
   end
 
   # DELETE /groups/1
   def destroy
+    if @user.created_groups.include?(@group)
+      @group.destroy
+
+      success
+    else
+      failure
+    end
   end
 
   private

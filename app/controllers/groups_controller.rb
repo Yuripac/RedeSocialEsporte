@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
   before_action :authorize_user, except: [:show, :index]
 
-  before_action :set_group, only: [:join, :show]
+  before_action :set_group, only: [:join, :unjoin, :show]
 
   # GET /groups
   # GET /groups.json
@@ -19,7 +19,7 @@ class GroupsController < ApplicationController
     @member = Member.new(user: current_user, group: @group)
 
     if @member.save
-      flash[:notice] = "Joined"
+      flash[:notice] = "You joined a group"
     else
       flash[:alert] = "You can't join"
     end
@@ -29,6 +29,16 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/unjoin
   def unjoin
+    @member = Member.find_by(user: current_user, group: @group)
+
+    if @member && !current_user.created_groups.include?(@group)
+      @member.destroy
+      flash[:notice] = "You left a group"
+    else
+      flash[:alert] = "You can't leave this group"
+    end
+
+    redirect_to groups_path
   end
 
   # GET /groups/1

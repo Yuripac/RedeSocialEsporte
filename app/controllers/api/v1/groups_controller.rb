@@ -41,7 +41,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     member = Member.new(user: @user, group: @group)
 
     begin       
-      member.save ? success : failure
+      member.save ? success("You joined a group"): failure
     rescue ActiveRecord::RecordNotUnique
       failure(status: :bad_request)
     end
@@ -53,7 +53,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
     if member && !@user.created_groups.include?(@group)
       member.destroy
-      success
+      success(info: "You left a group")
     else
       failure(status: :bad_request)
     end    
@@ -62,7 +62,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   # PATCH/PUT /groups/1
   def update
     if @user.created_groups.include?(@group)
-      @group.update(group_params) ? success : failure(status: :bad_request)      
+      @group.update(group_params) ? success(info: "Group was updated") : failure(status: :bad_request)      
     else
       failure
     end
@@ -73,7 +73,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     if @user.created_groups.include?(@group)
       @group.destroy
 
-      success
+      success(info: "Group was destroyed")
     else
       failure
     end
@@ -93,7 +93,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def group_params
-    params.require(:group).permit(:name, :description, :sport)
+    params.permit(:name, :description, :sport)
   end
 
 end

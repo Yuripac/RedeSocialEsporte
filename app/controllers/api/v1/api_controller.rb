@@ -13,7 +13,7 @@ class Api::V1::ApiController < ActionController::Base
   end
 
   def success(options = {})
-    default = { status: :ok, json: { success: true, data: {}, error: {}} }
+    default = { status: :ok, json: { success: true, data: {}, error: {}, info: ''} }
     options = default.deep_merge(options)
 
     render options

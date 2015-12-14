@@ -7,13 +7,13 @@ class Api::V1::LoginController < Api::V1::ApiController
   respond_to :json
 
   # POST  /api/v1/login
-  def create
+  def create    
     if @user.save
       response.headers['X-Api-Key'] = @user.api_key
       success
     else      
       failure(status: :bad_request)
-    end
+    end    
   end
 
   private

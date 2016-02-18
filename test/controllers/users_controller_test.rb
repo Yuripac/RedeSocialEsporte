@@ -5,25 +5,6 @@ class UsersControllerTest < ActionController::TestCase
     @user = users(:one)
   end
 
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:users)
-  end
-
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create user" do
-    assert_difference('User.count') do
-      post :create, user: { age: @user.age, favorite_sport: @user.favorite_sport, name: @user.name }
-    end
-
-    assert_redirected_to user_path(assigns(:user))
-  end
-
   test "should show user" do
     get :show, id: @user
     assert_response :success
@@ -35,7 +16,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should update user" do
-    patch :update, id: @user, user: { age: @user.age, favorite_sport: @user.favorite_sport, name: @user.name }
+    patch :update, id: @user, user: { email: @user.email, provider: @user.provider, uid: @user.uid, name: @user.name }
     assert_redirected_to user_path(assigns(:user))
   end
 
@@ -44,6 +25,6 @@ class UsersControllerTest < ActionController::TestCase
       delete :destroy, id: @user
     end
 
-    assert_redirected_to users_path
+    assert_redirected_to root_path
   end
 end

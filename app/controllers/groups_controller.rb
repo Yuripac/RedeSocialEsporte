@@ -102,7 +102,7 @@ class GroupsController < ApplicationController
   private
 
   def authorize_user
-    if current_user == nil
+    if current_user.nil?
       redirect_to root_path, alert: 'You need to be Logged to do that.'
     end
   end

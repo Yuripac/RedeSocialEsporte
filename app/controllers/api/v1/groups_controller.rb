@@ -40,7 +40,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   def join
     member = Member.new(user: @user, group: @group)
 
-    begin       
+    begin
       member.save ? success : failure
     rescue ActiveRecord::RecordNotUnique
       failure(status: :bad_request)
@@ -56,13 +56,13 @@ class Api::V1::GroupsController < Api::V1::ApiController
       success
     else
       failure(status: :bad_request)
-    end    
+    end
   end
 
   # PATCH/PUT /groups/1
   def update
     if @user.created_groups.include?(@group)
-      @group.update(group_params) ? success : failure(status: :bad_request)      
+      @group.update(group_params) ? success : failure(status: :bad_request)
     else
       failure
     end
@@ -72,7 +72,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
   def destroy
     if @user.created_groups.include?(@group)
       @group.destroy
-
       success
     else
       failure
@@ -84,7 +83,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   # Use callbacks to share common setup or constraints between actions.
   def set_group
     @group = Group.find_by_id(params[:id])
-    
+
     unless @group
       failure(status: :not_found)
       return false

@@ -2,10 +2,14 @@
 
 one:
   name: MyString
-  age: 
+  email: MyString
+  uid: MyString
+  provider: MyString
   favorite_sport: MyString
 
 two:
   name: MyString
-  age: 
+  email: MyString
+  uid: MyString
+  provider: MyString
   favorite_sport: MyString

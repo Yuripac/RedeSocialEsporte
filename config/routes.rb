@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   end
 
   # Users
-  resources :users, except: [:index]
+  resources :users, only: [:show, :edit, :update, :destroy]
 
   #---------------API----------------------------
 

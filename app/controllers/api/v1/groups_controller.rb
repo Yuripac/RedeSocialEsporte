@@ -7,33 +7,37 @@ class Api::V1::GroupsController < Api::V1::ApiController
   def index
     groups = Group.all
     groups_attributes = groups.map { |group| group.attributes }
-    success(json: { data: groups_attributes })
+    # success(json: { data: groups_attributes })
+    success(json: groups_attributes)
   end
 
   # POST /groups
   def create
     group = @user.created_groups.build(group_params)
-    if group.save
-      success(status: :created, json: { info: "Group was created" })
-    else
-      failure
-    end
+    # if group.save
+    #   success(status: :created, json: { info: "Group was created" })
+    # else
+    #   failure
+    # end
+    group.save ? success(status: :created) : failure
   end
 
   # GET /groups/1
   def show
-    if @group
-      success(json: { data: @group.attributes })
-    else
-      failure(status: :not_found)
-    end
+    # if @group
+    #   success(json: { data: @group.attributes })
+    # else
+    #   failure(status: :not_found)
+    # end
+    @group ? success(json: @group.attributes) : failure(status: :not_found)
   end
 
   # GET /groups/my
   def my
     groups = @user.groups
     groups_attributes = groups.map { |group| group.attributes }
-    success(json: { data: groups_attributes })
+    # success(json: { data: groups_attributes })
+    success(json: groups_attributes)
   end
 
   # GET /groups/1/join

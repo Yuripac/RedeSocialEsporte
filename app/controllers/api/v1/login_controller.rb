@@ -11,7 +11,7 @@ class Api::V1::LoginController < Api::V1::ApiController
     if @user.save
       response.headers['X-Api-Key'] = @user.api_key
       success
-    else      
+    else
       failure(status: :bad_request)
     end
   end

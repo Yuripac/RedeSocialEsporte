@@ -1,6 +1,5 @@
 class GroupsController < ApplicationController
   before_action :authorize_user, except: [:show, :index]
-
   before_action :set_group, only: [:join, :unjoin, :show]
 
   # GET /groups

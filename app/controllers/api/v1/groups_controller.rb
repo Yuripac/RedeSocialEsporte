@@ -27,7 +27,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   def my
     groups = @user.groups
     groups_attributes = groups.map { |group| group.attributes }
-    
+
     success(json: groups_attributes)
   end
 
@@ -48,7 +48,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
     if member && !@user.created_groups.include?(@group)
       member.destroy
-      success
+      success(info: "You left a group")
     else
       failure(status: :bad_request)
     end
@@ -56,7 +56,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # PATCH/PUT /groups/1
   def update
-    if @user.created_groups.include?(@group)
+    if @user.owner?(@group)
       @group.update(group_params) ? success : failure(status: :bad_request)
     else
       failure
@@ -87,7 +87,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def group_params
-    params.require(:group).permit(:name, :description, :sport)
+    params.permit(:name, :description, :sport)
   end
 
 end

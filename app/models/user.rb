@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   has_many :members, dependent: :destroy
+
   has_many :groups, through: :members, dependent: :destroy
 
   has_many :created_groups, class_name: "Group", foreign_key: "user_id", dependent: :destroy
@@ -9,6 +10,10 @@ class User < ActiveRecord::Base
 
   before_create do |user|
     user.api_key = user.generate_api_key
+  end
+
+  def owner?(group)
+    created_groups.include?(group)
   end
 
   def self.find_or_create_with_omniauth(auth)

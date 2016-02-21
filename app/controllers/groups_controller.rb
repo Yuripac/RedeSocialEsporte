@@ -1,3 +1,4 @@
+
 class GroupsController < ApplicationController
   before_action :authorize_user, except: [:show, :index]
   before_action :set_group, only: [:join, :unjoin, :show]
@@ -30,7 +31,7 @@ class GroupsController < ApplicationController
   def unjoin
     @member = Member.find_by(user: current_user, group: @group)
 
-    if @member && !current_user.created_groups.include?(@group)
+    if @member && !current_user.owner?(@group)
       @member.destroy
       flash[:notice] = "You left a group"
     else
@@ -99,12 +100,6 @@ class GroupsController < ApplicationController
   end
 
   private
-
-  def authorize_user
-    if current_user.nil?
-      redirect_to root_path, alert: 'You need to be Logged to do that.'
-    end
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_group

@@ -1,13 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   name: MyString
   description: MyText
   sport: MyString
-  user_id: MyInterger
+  user_id: 1
 
 two:
+  id: 2
   name: MyString
   description: MyText
   sport: MyString
-  user_id: MyInteger
+  user_id: 2

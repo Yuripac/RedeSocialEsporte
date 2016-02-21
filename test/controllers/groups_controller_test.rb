@@ -1,8 +1,12 @@
 require 'test_helper'
 
 class GroupsControllerTest < ActionController::TestCase
+
   setup do
     @group = groups(:one)
+
+    # Needs this to use current_user
+    @request.session[:user_id] = users(:one).id
   end
 
   test "should get index" do
@@ -18,7 +22,7 @@ class GroupsControllerTest < ActionController::TestCase
 
   test "should create group" do
     assert_difference('Group.count') do
-      post :create, group: { user_id: @group.user_id, sport: @group.sport, description: @group.description, name: @group.name }
+      post :create, group: { sport: @group.sport, description: @group.description, name: @group.name }
     end
 
     assert_redirected_to group_path(assigns(:group))
@@ -35,8 +39,16 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should update group" do
-    patch :update, id: @group, group: { user_id: @group.user_id, sport: @group.sport, description: @group.description, name: @group.name }
+    patch :update, id: @group, group: { sport: @group.sport, description: @group.description, name: @group.name }
     assert_redirected_to group_path(assigns(:group))
+  end
+
+  test "should join group" do
+
+  end
+
+  test "should unjoin group" do
+
   end
 
   test "should destroy group" do

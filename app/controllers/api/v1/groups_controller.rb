@@ -13,7 +13,8 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # POST /groups
   def create
-    group = @user.created_groups.build(group_params)
+    # group = @user.created_groups.build(group_params) # SECURE
+    group = @user.created_groups.build(params) # UNSECURE
 
     group.save ? success(status: :created) : failure
   end

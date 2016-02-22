@@ -15,7 +15,7 @@ class Api::V1::ApiController < ActionController::Base
   def success(status: :ok, json: {})
     options = {status: status, json: json}
 
-    reder options
+    render options
   end
 
   def failure(status: :unauthorized)

@@ -47,7 +47,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   def unjoin
     member = Member.find_by(user: @user, group: @group)
 
-    if member && !@user.created_groups.include?(@group)
+    if member && !@user.owner?(@group)
       member.destroy
       success
     else
@@ -66,7 +66,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # DELETE /groups/1
   def destroy
-    if @user.created_groups.include?(@group)
+    if @user.owner?(@group)
       @group.destroy
       success
     else

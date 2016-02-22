@@ -7,6 +7,8 @@ one:
   uid: MyString
   provider: MyString
   favorite_sport: MyString
+  provider: facebook
+  api_key: abc123456
 
 two:
   id: 2
@@ -15,3 +17,5 @@ two:
   uid: MyString
   provider: MyString
   favorite_sport: MyString
+  provider: facebook
+  api_key: 654321cba

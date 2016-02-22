@@ -13,8 +13,8 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # POST /groups
   def create
-    # group = @user.created_groups.build(group_params) # SECURE
-    group = @user.created_groups.build(params) # UNSECURE
+    group = @user.created_groups.build(group_params) # SECURE
+    #group = @user.created_groups.build(params) # UNSECURE
 
     group.save ? success(status: :created) : failure
   end
@@ -88,7 +88,8 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def group_params
-    params.permit(:name, :description, :sport)
+    # params.permit(:name, :description, :sport)
+    params.require(:group).permit(:name, :description, :sport)
   end
 
 end

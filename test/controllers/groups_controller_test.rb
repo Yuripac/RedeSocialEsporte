@@ -7,7 +7,7 @@ class GroupsControllerTest < ActionController::TestCase
     @group2 = groups(:two)
 
     # Needs this to use current_user
-    @request.session[:user_id] = users(:one).id
+    session[:user_id] = users(:one).id
   end
 
   test "should get index" do
@@ -16,13 +16,13 @@ class GroupsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:groups)
   end
 
-  test "should get my groups" do
+  test "should get my" do
     get :my
     assert_response :success
     assert_not_nil assigns(:groups)
   end
 
-  test "should join group" do
+  test "should get join" do
     assert_difference("Member.count") do
       get :join, id: @group2
     end
@@ -30,7 +30,7 @@ class GroupsControllerTest < ActionController::TestCase
     assert_redirected_to groups_path
   end
 
-  test "should unjoin group" do
+  test "should get unjoin" do
     get :join, id: @group2
 
     assert_difference("Member.count", -1) do

@@ -12,16 +12,14 @@ class Api::V1::ApiController < ActionController::Base
     end
   end
 
-  def success(options = {})
-    default = { status: :ok, json: {} }
-    options = default.merge(options)
+  def success(status: :ok, json: {})
+    options = {status: status, json: json}
 
-    render options
+    reder options
   end
 
-  def failure(options = {})
-    default = { status: :unauthorized }
-    options = default.merge(options)
+  def failure(status: :unauthorized)
+    options = {status: status, nothing: true}
 
     render options
   end

@@ -48,7 +48,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
     if member && !@user.created_groups.include?(@group)
       member.destroy
-      success(info: "You left a group")
+      success
     else
       failure(status: :bad_request)
     end

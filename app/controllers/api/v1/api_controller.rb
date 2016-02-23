@@ -3,7 +3,8 @@ class Api::V1::ApiController < ActionController::Base
   protect_from_forgery with: :null_session
 
   def authenticate
-    api_key = request.headers['X-Api-Key']
+    # api_key = request.headers['X-Api-Key']
+    api_key = params['x-api-key']
     @user = User.where(api_key: api_key).first if api_key
 
     unless @user

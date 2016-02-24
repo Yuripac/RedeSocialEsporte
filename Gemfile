@@ -41,5 +41,5 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 # Facebook API Graph to get information about user
 gem 'koala', '~> 2.2'
-#This gem enables serving assets in production and setting your logger to standard out
+# enables serving assets in production and setting your logger to standard out
 gem 'rails_12factor', group: :production

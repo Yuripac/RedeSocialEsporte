@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_or_create_with_api(id, data)
-    user = find_or_create_by(provider: data[:provider], uid: id)    
+    user = find_or_create_by(provider: data[:provider], uid: id)
     user.assign_attributes({
       name: data[:name],
       email: data[:email]
@@ -39,9 +39,9 @@ class User < ActiveRecord::Base
     Koala::Facebook::API.new(access_token).get_object("me")
   end
 
-  def self.data_from(provider:, access_token:)
+  def self.data_from(opts = {})
     begin
-      send("data_from_#{provider}", access_token)
+      send("data_from_#{opts[:provider]}", opts[:access_token])
     rescue NoMethodError
       {}
     end

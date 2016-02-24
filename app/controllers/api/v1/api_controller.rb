@@ -18,8 +18,8 @@ class Api::V1::ApiController < ActionController::Base
     render options
   end
 
-  def failure(status: :unauthorized)
-    options = {status: status, nothing: true}
+  def failure(status: :unauthorized, error: {})
+    options = {status: status, json: error}
 
     render options
   end

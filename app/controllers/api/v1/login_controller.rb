@@ -2,7 +2,7 @@ require 'json'
 
 class Api::V1::LoginController < Api::V1::ApiController
 
-  before_action :validate_token, :set_user
+  before_action :verify_token, :set_user
 
   respond_to :json
 
@@ -12,7 +12,7 @@ class Api::V1::LoginController < Api::V1::ApiController
       response.headers['X-Api-Key'] = @user.api_key
       success(json: @user.attributes)
     else
-      failure(status: :bad_request)
+      failure(status: :bad_request, error: @user.errors.messages)
     end
   end
 
@@ -22,20 +22,19 @@ class Api::V1::LoginController < Api::V1::ApiController
     begin
       @user = User.find_or_create_with_api(graph['id'], login_params)
     rescue Koala::Facebook::APIError => e
-      failure(status: :bad_request)
+      failure(status: :bad_request, error: e.fb_error_message)
     end
   end
 
-  def validate_token
+  def verify_token
     app_token    = Rails.application.secrets.facebook["app_token"]
     app_id       = Rails.application.secrets.facebook["app_id"]
     access_token = login_params[:access_token]
 
     begin
       info = Koala::Facebook::API.new(app_token).debug_token(access_token)
-    rescue Koala::Facebook::ClientError
-      failure(status: :bad_request)
-      return false
+    rescue Koala::Facebook::ClientError => e
+      failure(status: :bad_request, error: e.fb_error_message)
     end
   end
 

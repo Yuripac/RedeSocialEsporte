@@ -18,12 +18,8 @@ class Api::V1::LoginController < Api::V1::ApiController
 
   private
 
-  def set_user
-    begin
-      @user = User.find_or_create_with_api(graph['id'], login_params)
-    rescue Koala::Facebook::APIError => e
-      failure(status: :bad_request, error: e.fb_error_message)
-    end
+  def set_user    
+    @user = User.find_or_create_with_api(graph['id'], login_params)
   end
 
   def verify_token
@@ -33,6 +29,9 @@ class Api::V1::LoginController < Api::V1::ApiController
 
     begin
       info = Koala::Facebook::API.new(app_token).debug_token(access_token)
+      unless info["data"]["is_valid"]
+        failure(status: :bad_request, error: info["data"]["error"]["message"])
+      end
     rescue Koala::Facebook::ClientError => e
       failure(status: :bad_request, error: e.fb_error_message)
     end

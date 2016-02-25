@@ -1,9 +1,9 @@
 class Api::V1::GroupsController < Api::V1::ApiController
 
-  before_action :set_group, only: [:join, :show, :unjoin, :update, :destroy]
-  before_action :authenticate, except: [:index, :show]
+  before_action :set_group, only: [:join, :show, :members, :unjoin, :update, :destroy]
+  before_action :authenticate, except: [:index, :show, :members]
 
-  # GET /groups
+  # GET /api/v1/groups
   def index
     groups = Group.all
     groups_attributes = groups.map { |group| group.attributes }
@@ -11,27 +11,28 @@ class Api::V1::GroupsController < Api::V1::ApiController
     success(json: groups_attributes)
   end
 
-  # POST /groups
+  # POST /api/v1/groups
   def create
     group = @user.created_groups.build(group_params)
 
     group.save ? success(status: :created) : failure
   end
 
-  # GET /groups/1
+  # GET /api/v1/groups/1
   def show
-    @group ? success(json: @group.attributes) : failure(status: :not_found)
+    @group ? success(json: @group) : failure(status: :not_found)
   end
 
-  # GET /groups/my
+  # GET /api/v1/groups/my
   def my
-    groups = @user.groups
-    groups_attributes = groups.map { |group| group.attributes }
-
-    success(json: groups_attributes)
+    success(json: @user.groups)
   end
 
-  # GET /groups/1/join
+  def members
+    success(json: @group.users)
+  end
+
+  # GET /api/v1/groups/1/join
   def join
     member = Member.new(user: @user, group: @group)
 
@@ -42,7 +43,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     end
   end
 
-  # GET /groups/1/unjoin
+  # GET /api/v1/groups/1/unjoin
   def unjoin
     member = Member.find_by(user: @user, group: @group)
 
@@ -54,7 +55,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     end
   end
 
-  # PATCH/PUT /groups/1
+  # PATCH/PUT /api/v1/groups/1
   def update
     if @user.owner?(@group)
       @group.update(group_params) ? success : failure(status: :bad_request)
@@ -63,7 +64,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     end
   end
 
-  # DELETE /groups/1
+  # DELETE /api/v1/groups/1
   def destroy
     if @user.owner?(@group)
       @group.destroy
@@ -79,14 +80,11 @@ class Api::V1::GroupsController < Api::V1::ApiController
   def set_group
     @group = Group.find_by_id(params[:id])
 
-    unless @group
-      failure(status: :not_found)
-      return false
-    end
+    failure(status: :not_found) unless @group
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def group_params    
+  def group_params
     params.require(:group).permit(:name, :description, :sport)
   end
 

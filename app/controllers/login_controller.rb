@@ -8,12 +8,8 @@ class LoginController < ApplicationController
       session[:user_id] = user.id
       redirect_to root_path, notice: 'You are logged in'
     else
-      redirect_to root_path, alert: 'You has blank fields'
+      redirect_to root_path, alert: 'You have blank fields'
     end
-  end
-
-  def failure
-    redirect_to root_path
   end
 
   def destroy

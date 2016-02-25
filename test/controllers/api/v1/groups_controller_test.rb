@@ -24,6 +24,13 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
     assert_not_nil response.body
   end
 
+  test "should get members" do
+    get :members, id: @group1
+
+    assert_response :success
+    assert_not_nil response.body
+  end
+
   test "should get join" do
     assert_difference("Member.count") do
       get :join, id: @group2

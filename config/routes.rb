@@ -11,9 +11,10 @@ Rails.application.routes.draw do
 
   # Groups
   resources :groups do
-    get 'my', on: :collection
-    get 'join', on: :member
-    get 'unjoin', on: :member
+    get 'my',      on: :collection
+    get 'members', on: :member
+    get 'join',    on: :member
+    get 'unjoin',  on: :member
   end
 
   # Users
@@ -28,9 +29,10 @@ Rails.application.routes.draw do
 
       # Groups
       resources :groups, except: [:new, :edit] do
-        get 'my', on: :collection
-        get 'join', on: :member
-        get 'unjoin', on: :member
+        get 'my',      on: :collection
+        get 'members', on: :member
+        get 'join',    on: :member
+        get 'unjoin',  on: :member
       end
     end
   end

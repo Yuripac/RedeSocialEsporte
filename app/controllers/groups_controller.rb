@@ -31,7 +31,7 @@ class GroupsController < ApplicationController
   def unjoin
     @member = Member.find_by(user: current_user, group: @group)
 
-    if @member && !current_user.owner?(@group)
+    if @member && !@group.owner?(current_user)
       @member.destroy
       flash[:notice] = "You left a group"
     else

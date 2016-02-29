@@ -2,37 +2,39 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  root 'home#index'
+  root "home#index"
 
   # Routes to login with a provider
-  get "/auth/:provider/callback", to: 'login#create', as: 'auth_callback'
-  get "/auth/failure", to: 'login#failure', as: 'auth_failure'
-  delete "/logout", to: 'login#destroy', as: 'logout'
+  get "/auth/:provider/callback", to: "login#create", as: "auth_callback"
+  # get "/auth/failure", to: "login#failure", as: "auth_failure"
+  delete "/logout", to: "login#destroy", as: "logout"
 
-  # Groups
   resources :groups do
-    get 'my',      on: :collection
-    get 'members', on: :member
-    get 'join',    on: :member
-    get 'unjoin',  on: :member
+    get "my", on: :collection
+
+    member do
+      get "members"
+      get "join"
+      get "unjoin"
+    end
   end
 
-  # Users
   resources :users, only: [:show, :edit, :update, :destroy]
 
   #---------------API----------------------------
 
-  namespace :api, defaults: {format: 'json'} do
+  namespace :api, defaults: {format: "json"} do
     namespace :v1 do
-      # Login
-      post 'login', to: 'login#create', as: 'login'
+      post "login", to: "login#create"
 
-      # Groups
       resources :groups, except: [:new, :edit] do
-        get 'my',      on: :collection
-        get 'members', on: :member
-        get 'join',    on: :member
-        get 'unjoin',  on: :member
+        get "my", on: :collection
+
+        member do
+          get "members"
+          get "join"
+          get "unjoin"
+        end
       end
     end
   end

@@ -12,10 +12,6 @@ class User < ActiveRecord::Base
     user.api_key = user.generate_api_key
   end
 
-  def owner?(group)
-    created_groups.include?(group)
-  end
-
   def self.find_or_create_with_omniauth(auth)
     user = find_or_create_by(provider: auth.provider, uid: auth.uid)
     user.assign_attributes({

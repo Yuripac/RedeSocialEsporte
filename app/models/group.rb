@@ -12,4 +12,8 @@ class Group < ActiveRecord::Base
     member.save
   end
 
+  def owner?(_user)
+    user == _user
+  end
+
 end

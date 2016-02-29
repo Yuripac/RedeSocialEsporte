@@ -18,7 +18,7 @@ class Api::V1::LoginController < Api::V1::ApiController
 
   private
 
-  def set_user    
+  def set_user
     @user = User.find_or_create_with_api(graph['id'], login_params)
   end
 

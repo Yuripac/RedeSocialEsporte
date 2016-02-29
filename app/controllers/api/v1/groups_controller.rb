@@ -47,7 +47,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   def unjoin
     member = Member.find_by(user: @user, group: @group)
 
-    if member && !@user.owner?(@group)
+    if member && !@group.owner?(@user)
       member.destroy
       success
     else
@@ -57,7 +57,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # PATCH/PUT /api/v1/groups/1
   def update
-    if @user.owner?(@group)
+    if @group.owner?(@user)
       @group.update(group_params) ? success : failure(status: :bad_request)
     else
       failure
@@ -66,7 +66,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # DELETE /api/v1/groups/1
   def destroy
-    if @user.owner?(@group)
+    if @group.owner?(@user)
       @group.destroy
       success
     else

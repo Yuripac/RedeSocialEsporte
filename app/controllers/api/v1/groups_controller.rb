@@ -6,9 +6,8 @@ class Api::V1::GroupsController < Api::V1::ApiController
   # GET /api/v1/groups
   def index
     groups = Group.all
-    groups_attributes = groups.map { |group| group.attributes }
 
-    success(json: groups_attributes)
+    success(json: groups)
   end
 
   # POST /api/v1/groups
@@ -29,7 +28,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   end
 
   def members
-    success(json: @group.users)
+    success(json: @group.users.to_json(only: ["id", "name", "email", "uid"]))
   end
 
   # GET /api/v1/groups/1/join

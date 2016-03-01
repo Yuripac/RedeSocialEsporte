@@ -1,4 +1,3 @@
-require 'json'
 
 class Api::V1::LoginController < Api::V1::ApiController
 
@@ -10,7 +9,7 @@ class Api::V1::LoginController < Api::V1::ApiController
   def create
     if @user.save
       response.headers['X-Api-Key'] = @user.api_key
-      success(json: @user.attributes)
+      success(json: @user)
     else
       failure(status: :bad_request, error: @user.errors.messages)
     end

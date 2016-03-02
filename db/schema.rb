@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151116141951) do
+ActiveRecord::Schema.define(version: 20160301235341) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -45,6 +45,12 @@ ActiveRecord::Schema.define(version: 20151116141951) do
   end
 
   add_index "members", ["user_id", "group_id"], name: "index_members_on_user_id_and_group_id", unique: true
+
+  create_table "sports", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

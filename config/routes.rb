@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show, :edit, :update, :destroy]
 
+  resources :sports
   #---------------API----------------------------
 
   namespace :api, defaults: {format: "json"} do

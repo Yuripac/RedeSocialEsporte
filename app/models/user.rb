@@ -14,33 +14,20 @@ class User < ActiveRecord::Base
 
   def self.find_or_create_with_omniauth(auth)
     user = find_or_create_by(provider: auth.provider, uid: auth.uid)
-    user.assign_attributes({
-      name: auth.info.name,
-      email: auth.info.email,
-    })
+    user.assign_attributes({ name: auth.info.name, email: auth.info.email })
     user
   end
 
-  def self.find_or_create_with_api(id, data)
-    user = find_or_create_by(provider: data[:provider], uid: id)
-    user.assign_attributes({
-      name: data[:name],
-      email: data[:email]
-    })
+  def self.find_or_create_with_api(data)
+    user = find_or_create_by(provider: "facebook", uid: data["id"])
+    user.assign_attributes({ name: data["name"],email: data["email"] })
     user
   end
 
   #---------------------DATA FROM SOCIAL MIDIA-----------------------------
-  def self.data_from_facebook(access_token)
-    Koala::Facebook::API.new(access_token).get_object("me")
-  end
-
-  def self.data_from(opts = {})
-    begin
-      send("data_from_#{opts[:provider]}", opts[:access_token])
-    rescue NoMethodError
-      {}
-    end
+  def self.facebook(access_token)
+    koala = Koala::Facebook::API.new(access_token)
+    koala.get_object("me", fields: ["email", "name"])
   end
   #-----------------------------------------------------------------------
   def generate_api_key

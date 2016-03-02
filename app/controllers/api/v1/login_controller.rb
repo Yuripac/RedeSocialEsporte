@@ -9,7 +9,7 @@ class Api::V1::LoginController < Api::V1::ApiController
   def create
     if @user.save
       response.headers['X-Api-Key'] = @user.api_key
-      success(json: @user)
+      success(json: @user.to_json(only: ["id", "name", "email", "uid", "provider"]))
     else
       failure(status: :bad_request, error: @user.errors.messages)
     end
@@ -18,7 +18,7 @@ class Api::V1::LoginController < Api::V1::ApiController
   private
 
   def set_user
-    @user = User.find_or_create_with_api(graph['id'], login_params)
+    @user = User.find_or_create_with_api(graph)
   end
 
   def verify_token
@@ -38,14 +38,11 @@ class Api::V1::LoginController < Api::V1::ApiController
 
   # request user's graph from facebook
   def graph
-    provider     = login_params[:provider]
-    access_token = login_params[:access_token]
-
-    @graph ||= User.data_from(provider: provider, access_token: access_token)
+    @graph ||= User.facebook(login_params[:access_token])
   end
 
   def login_params
-    params.require(:login).permit(:access_token, :provider, :name, :email)
+    params.require(:login).permit(:access_token)
   end
 
 end

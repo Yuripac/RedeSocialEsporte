@@ -28,7 +28,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   end
 
   def members
-    success(json: @group.users.to_json(only: ["id", "name", "email", "uid"]))
+    success(json: @group.users.to_json(only: ["id", "name", "email", "uid", "provider"]))
   end
 
   # GET /api/v1/groups/1/join

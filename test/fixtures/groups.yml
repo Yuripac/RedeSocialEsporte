@@ -4,12 +4,12 @@ one:
   id: 1
   name: MyString
   description: MyText
-  sport: MyString
   user_id: 1
+  sport_id: 1
 
 two:
   id: 2
   name: MyString
   description: MyText
-  sport: MyString
   user_id: 2
+  sport_id: 2

@@ -2,20 +2,18 @@
 
 one:
   id: 1
+  sport_id: 1
   name: MyString
   email: MyString
   uid: MyString
   provider: MyString
-  favorite_sport: MyString
-  provider: facebook
   api_key: abc123456
 
 two:
   id: 2
+  sport_id: 2
   name: MyString
   email: MyString
   uid: MyString
-  provider: MyString
-  favorite_sport: MyString
-  provider: facebook
+  provider: MyString    
   api_key: 654321cba

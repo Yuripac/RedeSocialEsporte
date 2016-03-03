@@ -16,7 +16,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should update user" do
-    patch :update, id: @user, user: { email: @user.email, name: @user.name, favorite_sport: @user.favorite_sport }
+    patch :update, id: @user, user: { email: @user.email, name: @user.name, sport: @user.sport }
     assert_redirected_to user_path(assigns(:user))
   end
 

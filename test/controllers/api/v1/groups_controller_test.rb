@@ -51,7 +51,7 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
 
   test "should create group" do
     assert_difference('Group.count') do
-      post :create, group: { sport: @group1.sport, description: @group1.description, name: @group1.name }
+      post :create, group: { sport_id: @group1.sport_id, description: @group1.description, name: @group1.name }
     end
 
     assert_response :created
@@ -65,7 +65,7 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
   end
 
   test "should update group" do
-    patch :update, id: @group1, group: { sport: @group1.sport, description: @group1.description, name: @group1.name }
+    patch :update, id: @group1, group: { sport_id: @group1.sport_id, description: @group1.description, name: @group1.name }
     assert_response :success
   end
 

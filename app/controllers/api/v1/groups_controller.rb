@@ -28,7 +28,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   end
 
   def members
-    success(json: @group.users.to_json(only: ["id", "name", "email", "uid", "provider"]))
+    success(json: @group.users.to_json(only: ["id", "name", "email", "uid", "provider", "sport_id"]))
   end
 
   # GET /api/v1/groups/1/join
@@ -84,7 +84,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def group_params
-    params.require(:group).permit(:name, :description, :sport)
+    params.require(:group).permit(:name, :description, :sport_id)
   end
 
 end

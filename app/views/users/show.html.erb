@@ -9,6 +9,8 @@
 </p>
 
 <p>
+  <strong>Sport:</strong>
+  <%= @user.sport.name if @user.sport %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

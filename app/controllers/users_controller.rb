@@ -1,4 +1,4 @@
-# Must be deleted?
+
 class UsersController < ApplicationController
 
   before_action :set_user
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :favorite_sport, :email)
+    params.require(:user).permit(:name, :favorite_sport, :email, :sport_id)
   end
   # Use callbacks to share common setup or constraints between actions.
   def set_user

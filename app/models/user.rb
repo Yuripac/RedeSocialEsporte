@@ -14,15 +14,15 @@ class User < ActiveRecord::Base
     user.api_key = user.generate_api_key
   end
 
-  def self.find_or_create_with_omniauth(auth)
-    user = find_or_create_by(provider: auth.provider, uid: auth.uid)
-    user.assign_attributes({ name: auth.info.name, email: auth.info.email })
+  def self.find_or_initialize_with_omniauth(auth)
+    user = find_or_initialize_by(provider: auth.provider, uid: auth.uid)
+    user.assign_attributes(name: auth.info.name, email: auth.info.email)
     user
   end
 
-  def self.find_or_create_with_api(data)
-    user = find_or_create_by(provider: "facebook", uid: data["id"])
-    user.assign_attributes({ name: data["name"],email: data["email"] })
+  def self.find_or_initialize_with_api(data)
+    user = find_or_initialize_by(provider: "facebook", uid: data["id"])
+    user.assign_attributes(name: data["name"],email: data["email"])
     user
   end
 
@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
     koala.get_object("me", fields: ["email", "name"])
   end
   #-----------------------------------------------------------------------
+
   def generate_api_key
     loop  do
       token = SecureRandom.base64.tr('+/=', 'Qrt')

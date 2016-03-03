@@ -7,7 +7,7 @@ class Api::V1::LoginController < Api::V1::ApiController
 
   # POST  /api/v1/login
   def create
-    if @user.save
+    if User.exists?(@user) || @user.save
       response.headers['X-Api-Key'] = @user.api_key
       success(json: @user.to_json(only: ["id", "name", "email", "uid", "provider", "user_id", "sport_id"]))
     else
@@ -18,7 +18,7 @@ class Api::V1::LoginController < Api::V1::ApiController
   private
 
   def set_user
-    @user = User.find_or_create_with_api(graph)
+    @user = User.find_or_initialize_with_api(graph)
   end
 
   def verify_token

@@ -6,12 +6,12 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.includes(:users, :user).all
+    @groups = Group.includes(:users, :user, :sport)
   end
 
   # GET /groups/my
   def my
-    @groups = current_user.groups.includes(:users, :user)
+    @groups = current_user.groups.includes(:users, :user, :sport)
   end
 
   # GET /groups/1/join
@@ -53,7 +53,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
-    @group = current_user.created_groups.find(params[:id])
+    @group = current_user.created_groups.find(params[:id])    
   end
 
   # POST /groups

@@ -1,9 +1,11 @@
 <p>
   <label>Name:</label><%= group.name %>
 </p>
-<%= simple_format group.description %>
 <p>
-  <label>Sport:</label><%= group.sport %>
+  <label>Description:</label><%= group.description %>
+</p>
+<p>
+  <label>Sport:</label><%= group.sport.name if group.sport%>
 </p>
 
 <%= link_to 'Show', group %>

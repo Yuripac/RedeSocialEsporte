@@ -4,8 +4,12 @@
 </p>
 
 <p>
-  <strong>Description:</strong
-  <%= simple_format @group.description %>
+  <strong>Description:</strong>
+  <%= @group.description %>
+</p>
+<p>
+  <strong>Sport:</strong>
+  <%= @group.sport.name if @group.sport %>
 </p>
 
 <% if current_user == @group.user %>

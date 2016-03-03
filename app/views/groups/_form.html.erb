@@ -22,7 +22,7 @@
   <div class="field form-group">
     <%= f.label :sport, class: 'col-sm-1 control-label' %><br>
     <div class='col-sm-3'>
-      <%= f.text_field :sport, class: 'form-control' %>
+      <%= f.collection_select :sport_id, Sport.all, :id, :name, class: 'form-control' %>
     </div>
   </div>
   <div class="actions form-group">

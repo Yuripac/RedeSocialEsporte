@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   belongs_to :sport
 
-  validates_presence_of :uid, :name, :email, :provider, :sport
+  validates_presence_of :uid, :name, :email, :provider
 
   before_create do |user|
     user.api_key = user.generate_api_key

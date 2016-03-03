@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301235341) do
+ActiveRecord::Schema.define(version: 20160303010723) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20160301235341) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
-    t.string   "sport"
+    t.integer  "sport_id"
   end
 
   create_table "members", force: :cascade do |t|
@@ -54,13 +54,13 @@ ActiveRecord::Schema.define(version: 20160301235341) do
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
-    t.string   "favorite_sport"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string   "email"
     t.string   "uid"
     t.string   "provider"
     t.string   "api_key"
+    t.integer  "sport_id"
   end
 
 end

@@ -6,7 +6,9 @@ class User < ActiveRecord::Base
 
   has_many :created_groups, class_name: "Group", foreign_key: "user_id", dependent: :destroy
 
-  validates_presence_of :uid, :name, :email, :provider
+  belongs_to :sport
+
+  validates_presence_of :uid, :name, :email, :provider, :sport
 
   before_create do |user|
     user.api_key = user.generate_api_key

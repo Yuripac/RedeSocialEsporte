@@ -6,17 +6,17 @@ class Api::V1::ApiController < ActionController::Base
     api_key = request.headers['X-Api-Key']
     @user = User.where(api_key: api_key).first if api_key
 
-    failure(error: "x-api-key is wrong") unless @user    
+    failure(error: "x-api-key is wrong") unless @user
   end
 
   def success(status: :ok, json: {})
-    options = {status: status, json: json}
+    options = { status: status, json: json }
 
     render options
   end
 
   def failure(status: :unauthorized, error: {})
-    options = {status: status, json: error}
+    options = { status: status, json: error }
 
     render options
   end

@@ -5,7 +5,9 @@ class Group < ActiveRecord::Base
 
   belongs_to :user
 
-  validates_presence_of :name, :description, :sport, :user_id
+  belongs_to :sport
+
+  validates_presence_of :name, :description, :user, :sport
 
   after_create do |group|
     member = Member.new(user: group.user, group: group)

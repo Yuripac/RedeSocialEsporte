@@ -20,14 +20,14 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:show, :edit, :update, :destroy]
-
-  #resources :sports
   #---------------API----------------------------
 
   namespace :api, defaults: {format: "json"} do
     namespace :v1 do
       get "login", to: "login#create"
 
+      resources :sports, only: [:index]
+      
       resources :groups, except: [:new, :edit] do
         get "my", on: :collection
 

@@ -24,7 +24,7 @@ class Api::V1::LoginController < Api::V1::ApiController
   def verify_token
     app_token    = Rails.application.secrets.facebook["app_token"]
     app_id       = Rails.application.secrets.facebook["app_id"]
-    access_token = login_params[:access_token]
+    access_token = request.headers["X-Access-Token"]
 
     begin
       info = Koala::Facebook::API.new(app_token).debug_token(access_token)
@@ -38,11 +38,7 @@ class Api::V1::LoginController < Api::V1::ApiController
 
   # request user's graph from facebook
   def graph
-    @graph ||= User.facebook(login_params[:access_token])
-  end
-
-  def login_params
-    params.require(:login).permit(:access_token)
+    @graph ||= User.facebook(request.headers["X-Access-Token"])
   end
 
 end

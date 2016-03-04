@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
 
   has_many :members, dependent: :destroy
+  has_many :groups, through: :members
 
-  has_many :groups, through: :members, dependent: :destroy
   has_many :created_groups, class_name: "Group", foreign_key: "user_id", dependent: :destroy
 
   belongs_to :sport
@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
 
   def self.find_or_initialize_with_api(data)
     user = find_or_initialize_by(provider: "facebook", uid: data["id"])
-    user.assign_attributes(name: data["name"],email: data["email"])
+    user.assign_attributes(name: data["name"], email: data["email"])
     user
   end
 

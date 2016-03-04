@@ -40,11 +40,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   def join
     member = Member.new(user: @user, group: @group)
 
-    begin
-      member.save ? success : failure
-    rescue ActiveRecord::RecordNotUnique
-      failure(status: :bad_request)
-    end
+    member.save ? success : failure
   end
 
   # GET /api/v1/groups/1/unjoin

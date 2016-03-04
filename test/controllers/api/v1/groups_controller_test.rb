@@ -32,7 +32,7 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
   end
 
   test "should get join" do
-    assert_difference("Member.count") do
+    assert_difference("Membership.count") do
       get :join, id: @group2
     end
 
@@ -42,7 +42,7 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
   test "should get unjoin" do
     get :join, id: @group2
 
-    assert_difference("Member.count", -1) do
+    assert_difference("Membership.count", -1) do
       get :unjoin, id: @group2
     end
 

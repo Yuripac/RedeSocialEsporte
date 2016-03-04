@@ -38,14 +38,14 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1/join
   def join
-    member = Member.new(user: @user, group: @group)
+    member = Membership.new(user: @user, group: @group)
 
     member.save ? success : failure
   end
 
   # GET /api/v1/groups/1/unjoin
   def unjoin
-    member = Member.find_by(user: @user, group: @group)
+    member = Membership.find_by(user: @user, group: @group)
 
     if member && !@group.owner?(@user)
       member.destroy

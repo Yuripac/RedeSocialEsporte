@@ -1,0 +1,5 @@
+class ChangeTableNameMembership < ActiveRecord::Migration
+  def change
+    rename_table :membership, :memberships
+  end
+end

@@ -16,7 +16,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/join
   def join
-    @member = Member.new(user: current_user, group: @group)
+    @member = Membership.new(user: current_user, group: @group)
 
     if @member.save
       flash[:notice] = "You joined a group"
@@ -29,7 +29,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/unjoin
   def unjoin
-    @member = Member.find_by(user: current_user, group: @group)
+    @member = Membership.find_by(user: current_user, group: @group)
 
     if @member && !@group.owner?(current_user)
       @member.destroy

@@ -26,8 +26,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       get "login", to: "login#create"
 
+      resources :users, only: [:show, :update]
+
       resources :sports, only: [:index]
-      
+
       resources :groups, except: [:new, :edit] do
         get "my", on: :collection
 

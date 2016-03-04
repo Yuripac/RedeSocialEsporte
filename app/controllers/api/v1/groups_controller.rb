@@ -28,7 +28,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   end
 
   def members
-    success(json: @group.users.to_json(only: ["id", "name", "email", "uid", "provider", "sport_id"]))
+    success(json: @group.users.to_json(except: "api_key"))
   end
 
   # GET /api/v1/groups/1/join
@@ -78,8 +78,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
   # Use callbacks to share common setup or constraints between actions.
   def set_group
     @group = Group.find_by_id(params[:id])
-
-    failure(status: :not_found) unless @group
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

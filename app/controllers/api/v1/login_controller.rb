@@ -9,7 +9,7 @@ class Api::V1::LoginController < Api::V1::ApiController
   def create
     if User.exists?(@user) || @user.save
       response.headers['X-Api-Key'] = @user.api_key
-      success(json: @user.to_json(only: ["id", "name", "email", "uid", "provider", "user_id", "sport_id"]))
+      success(json: @user.to_json(except: "api_key"))
     else
       failure(status: :bad_request, error: @user.errors.messages)
     end

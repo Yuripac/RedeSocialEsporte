@@ -14,7 +14,12 @@ class Api::V1::GroupsController < Api::V1::ApiController
   def create
     group = @user.created_groups.build(group_params)
 
-    group.save ? success(status: :created) : failure
+    if group.save
+      group.users << @user
+      success(status: :created)
+    else
+      failure
+    end
   end
 
   # GET /api/v1/groups/1

@@ -53,7 +53,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
-    @group = current_user.created_groups.find(params[:id])    
+    @group = current_user.created_groups.find(params[:id])
   end
 
   # POST /groups
@@ -61,6 +61,7 @@ class GroupsController < ApplicationController
     @group  = current_user.created_groups.build(group_params)
 
     if @group.save
+      @group.users << current_user
       redirect_to @group, notice: 'Group was successfully created.'
     else
       render :new

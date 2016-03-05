@@ -14,7 +14,7 @@
   	|<%= link_to 'Edit', edit_group_path(group) %>
   	|<%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %>
   <% else %>
-  	<% unless group.users.include?(current_user)%>
+  	<% unless group.members.include?(current_user)%>
       <%= link_to 'Join', join_group_path(group) %>
   	<% else%>
   	  <%= link_to 'Unjoin', unjoin_group_path(group) %>

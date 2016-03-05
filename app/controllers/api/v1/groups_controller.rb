@@ -15,7 +15,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
     group = @user.created_groups.build(group_params)
 
     if group.save
-      group.users << @user
+      group.members << @user
       success(status: :created)
     else
       failure
@@ -33,22 +33,23 @@ class Api::V1::GroupsController < Api::V1::ApiController
   end
 
   def members
-    success(json: @group.users.to_json(except: "api_key"))
+    success(json: @group.members.to_json(except: "api_key"))
   end
 
   # GET /api/v1/groups/1/join
   def join
-    member = Membership.new(user: @user, group: @group)
-
-    member.save ? success : failure
+    unless @group.members.include?(@user)
+      @group.members << @user
+      success
+    else
+      failure(status: :bad_request)
+    end
   end
 
   # GET /api/v1/groups/1/unjoin
   def unjoin
-    member = Membership.find_by(user: @user, group: @group)
-
-    if member && !@group.owner?(@user)
-      member.destroy
+    if @group.members.include?(@user) && !@group.owner?(@user)
+      @group.members.destroy(@user)
       success
     else
       failure(status: :bad_request)

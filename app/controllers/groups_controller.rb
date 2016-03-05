@@ -6,19 +6,18 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.includes(:users, :user, :sport)
+    @groups = Group.includes(:members, :user, :sport)
   end
 
   # GET /groups/my
   def my
-    @groups = current_user.groups.includes(:users, :user, :sport)
+    @groups = current_user.groups.includes(:members, :user, :sport)
   end
 
   # GET /groups/1/join
   def join
-    @member = Membership.new(user: current_user, group: @group)
-
-    if @member.save
+    unless @group.members.include?(current_user)
+      @group.members << current_user
       flash[:notice] = "You joined a group"
     else
       flash[:alert] = "You can't join"
@@ -29,15 +28,12 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/unjoin
   def unjoin
-    @member = Membership.find_by(user: current_user, group: @group)
-
-    if @member && !@group.owner?(current_user)
-      @member.destroy
+    if @group.members.include?(current_user) && !@group.owner?(current_user)
+      @group.members.destroy(current_user)
       flash[:notice] = "You left a group"
     else
       flash[:alert] = "You can't leave this group"
     end
-
     redirect_to groups_path
   end
 
@@ -61,7 +57,7 @@ class GroupsController < ApplicationController
     @group  = current_user.created_groups.build(group_params)
 
     if @group.save
-      @group.users << current_user
+      @group.members << current_user
       redirect_to @group, notice: 'Group was successfully created.'
     else
       render :new

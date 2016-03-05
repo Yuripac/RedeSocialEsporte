@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
 
   has_many :memberships, dependent: :destroy
-  has_many :groups, through: :memberships
+  has_many :membership_groups, through: :memberships, source: :group
 
-  has_many :created_groups, class_name: "Group", foreign_key: "user_id", dependent: :destroy
+  has_many :groups, dependent: :destroy
 
   belongs_to :sport
 

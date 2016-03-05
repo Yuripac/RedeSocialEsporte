@@ -12,7 +12,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # POST /api/v1/groups
   def create
-    group = @user.created_groups.build(group_params)
+    group = @user.groups.build(group_params)
 
     if group.save
       success(status: :created)
@@ -28,7 +28,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/my
   def my
-    success(json: @user.groups)
+    success(json: @user.membership_groups)
   end
 
   def members

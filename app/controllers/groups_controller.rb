@@ -11,7 +11,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/my
   def my
-    @groups = current_user.groups.includes(:members, :owner, :sport)
+    @groups = current_user.membership_groups.includes(:members, :owner, :sport)
   end
 
   # GET /groups/1/join
@@ -43,17 +43,17 @@ class GroupsController < ApplicationController
 
   # GET /groups/new
   def new
-    @group = current_user.created_groups.build
+    @group = current_user.groups.build
   end
 
   # GET /groups/1/edit
   def edit
-    @group = current_user.created_groups.find(params[:id])
+    @group = current_user.groups.find(params[:id])
   end
 
   # POST /groups
   def create
-    @group  = current_user.created_groups.build(group_params)
+    @group  = current_user.groups.build(group_params)
 
     if @group.save
       redirect_to @group, notice: 'Group was successfully created.'
@@ -64,7 +64,7 @@ class GroupsController < ApplicationController
 
   # PATCH/PUT /groups/1
   def update
-    @group = current_user.groups.find(params[:id])
+    @group = current_user.membership_groups.find(params[:id])
 
     if @group.update(group_params)
       redirect_to @group, notice: 'Group was successfully updated.'
@@ -75,7 +75,7 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1
   def destroy
-    @group = current_user.groups.find(params[:id])
+    @group = current_user.membership_groups.find(params[:id])
     @group.destroy
 
     redirect_to groups_url, notice: 'Group was successfully destroyed.'

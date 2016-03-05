@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'rake', '10.5.0'
 # Windows needs this
 gem 'tzinfo-data'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

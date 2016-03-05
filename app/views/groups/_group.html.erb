@@ -10,7 +10,7 @@
 
 <%= link_to 'Show', group %>
 <% if current_user%>
-  <% if current_user == group.user %>
+  <% if current_user == group.owner %>
   	|<%= link_to 'Edit', edit_group_path(group) %>
   	|<%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %>
   <% else %>

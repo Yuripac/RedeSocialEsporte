@@ -12,7 +12,7 @@
   <%= @group.sport.name if @group.sport %>
 </p>
 
-<% if current_user == @group.user %>
+<% if current_user == @group.owner %>
   <%= link_to 'Edit', edit_group_path(@group) %> |
 <% end %>
 <%= link_to 'Back', groups_path %>

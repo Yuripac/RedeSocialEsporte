@@ -15,7 +15,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
     group = @user.created_groups.build(group_params)
 
     if group.save
-      group.members << @user
       success(status: :created)
     else
       failure
@@ -48,7 +47,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1/unjoin
   def unjoin
-    if @group.members.include?(@user) && !@group.owner?(@user)
+    if @group.members.include?(@user) && !@group.owned_by?(@user)
       @group.members.destroy(@user)
       success
     else
@@ -58,7 +57,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # PATCH/PUT /api/v1/groups/1
   def update
-    if @group.owner?(@user)
+    if @group.owned_by?(@user)
       @group.update(group_params) ? success : failure(status: :bad_request)
     else
       failure
@@ -67,7 +66,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # DELETE /api/v1/groups/1
   def destroy
-    if @group.owner?(@user)
+    if @group.owned_by?(@user)
       @group.destroy
       success
     else

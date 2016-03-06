@@ -6,7 +6,7 @@ class Api::V1::UsersController < Api::V1::ApiController
 
   # GET api/v1/users/:id
   def show
-    @user ? success(json: @user.to_json(except: "api_key")) : failure(status: :not_found)
+    @user ? success(json: @user.to_json(except: "api_key", include: :sport)) : failure(status: :not_found)
   end
 
   # PATCH/PUT api/v1/users/:id

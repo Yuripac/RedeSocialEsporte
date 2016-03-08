@@ -9,8 +9,8 @@ ActiveAdmin.register_page "Dashboard" do
         panel "Recent Groups" do
           table_for Group.order('id desc').limit(10).each do |group|
             column('Name')       {|group| group.name}
-            column('Owner')      {|group| link_to(group.user.email, admin_user_path(group.user))}
-            column('Sport')      {|group| group.sport}
+            column('Owner')      {|group| link_to(group.owner.email, admin_user_path(group.owner))}
+            column('Sport')      {|group| group.sport.name}
             column('Created at') {|group| pretty_format(group.created_at)}
           end
         end

@@ -27,12 +27,11 @@ Rails.application.routes.draw do
       get "login", to: "login#create"
 
       resources :users, only: [:show, :update]
-
       resources :sports, only: [:index]
 
       resources :groups, except: [:new, :edit] do
+        resource :activity, except: [:new, :edit]
         get "my", on: :collection
-
         member do
           get "members"
           get "join"

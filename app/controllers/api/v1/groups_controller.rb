@@ -14,12 +14,14 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # POST /api/v1/groups
   def create
-    group = @user.groups.build(group_params)
+    group    = @user.groups.build(group_params)
+    activity = group.build_activity(activity_params)
 
     if group.save
+      activity.save
       success(status: :created)
     else
-      failure
+      failure(status: :bad_request, error: group.errors.messages)
     end
   end
 
@@ -87,6 +89,10 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   def group_params
     params.require(:group).permit(:name, :description, :sport_id)
+  end
+
+  def activity_params
+    params.fetch(:activity, {}).permit(:latitude, :longitude, :address)
   end
 
 end

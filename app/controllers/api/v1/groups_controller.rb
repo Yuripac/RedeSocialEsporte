@@ -3,7 +3,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   before_action :set_group,         only:   [:join, :show, :members, :unjoin, :update, :destroy]
   before_action :authenticate,      except: [:index, :show, :members]
 
-  include VerifyGroupOwner
+  include Api::V1::VerifyGroupOwner
 
   # GET /api/v1/groups
   def index

@@ -2,7 +2,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   before_action :set_group
   before_action :authenticate,      except: :show
-  
+
   include VerifyGroupOwner
 
   # POST api/v1/groups/:id/activity
@@ -49,7 +49,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   end
 
   def activity_params
-    params.require(:activity).permit(:latitude, :longitude, :address)
+    params.require(:activity).permit(:latitude, :longitude, :address, :date)
   end
 
   def verify_user_owner

@@ -4,5 +4,5 @@ class Activity < ActiveRecord::Base
 
   has_one :sport, through: :group
 
-  validates_presence_of :latitude, :longitude, :address, :group
+  validates_presence_of :latitude, :longitude, :address, :date, :group
 end

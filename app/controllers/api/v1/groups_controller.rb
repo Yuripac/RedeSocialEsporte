@@ -92,7 +92,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   end
 
   def activity_params
-    params.fetch(:activity, {}).permit(:latitude, :longitude, :address)
+    params.fetch(:activity, {}).permit(:latitude, :longitude, :address, :date)
   end
 
 end

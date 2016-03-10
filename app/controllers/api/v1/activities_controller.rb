@@ -1,9 +1,9 @@
 class Api::V1::ActivitiesController < Api::V1::ApiController
 
   before_action :set_group
-  before_action :authenticate,      except: :show
+  before_action :authenticate, except: :show
 
-  include VerifyGroupOwner
+  include Api::V1::VerifyGroup
 
   # POST api/v1/groups/:id/activity
   def create

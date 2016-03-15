@@ -5,9 +5,11 @@ one:
   longitude: MyString
   address: MyString
   group_id: 1
+  date: <%= Time.zone.now + 5.day %>
 
 two:
   latitude: MyString
   longitude: MyString
   address: MyString
   group_id: 1
+  date: <%= Time.zone.now + 5.day %>

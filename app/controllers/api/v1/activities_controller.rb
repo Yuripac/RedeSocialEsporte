@@ -4,9 +4,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   before_action :authenticate, except: :show
 
   include Api::V1::VerifyGroupOwner
-
-  rescue_from ActiveRecord::RecordNotFound, with: :not_found
-
+  
   # POST api/v1/groups/:id/activity
   def create
     failure(status: :bad_request, error: "Group already has a activity") and return if @group.activity

@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
       resources :groups, except: [:new, :edit] do
         resource :activity, except: [:new, :edit]
+        resources :performed_activities, only: :index
+
         get "my", on: :collection
         member do
           get "members"

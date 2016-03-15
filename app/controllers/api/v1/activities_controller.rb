@@ -5,6 +5,8 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   include Api::V1::VerifyGroupOwner
 
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+
   # POST api/v1/groups/:id/activity
   def create
     failure(status: :bad_request, error: "Group already has a activity") and return if @group.activity
@@ -14,7 +16,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
     if activity.save
       success(status: :created)
     else
-      failure(error: activity.errors.messages)
+      failure(status: :bad_request, error: activity.errors.messages)
     end
   end
 
@@ -45,15 +47,11 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   private
 
   def set_group
-    @group = Group.find_by_id(params["group_id"])
+    @group = Group.find(params["group_id"])
   end
 
   def activity_params
     params.require(:activity).permit(:latitude, :longitude, :address, :date)
-  end
-
-  def verify_user_owner
-    failure(error: "User isn't authorized to do that.") unless @group.owned_by?(@user)
   end
 
 end

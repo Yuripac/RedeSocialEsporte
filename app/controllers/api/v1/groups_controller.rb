@@ -1,3 +1,4 @@
+
 class Api::V1::GroupsController < Api::V1::ApiController
 
   before_action :set_group,         only:   [:join, :show, :members, :unjoin, :update, :destroy]
@@ -27,11 +28,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1
   def show
-    if @group
-      success(json: @group.to_json(include: [:sport, :activity]))
-    else
-      failure(status: :not_found)
-    end
+    success(json: @group.to_json(include: [:sport, :activity]))
   end
 
   # GET /api/v1/groups/my
@@ -76,15 +73,15 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # DELETE /api/v1/groups/1
   def destroy
-      @group.destroy
-      success
+    @group.destroy
+    success
   end
 
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_group
-    @group = Group.find_by_id(params[:id])
+    @group = Group.find(params[:id])
   end
 
   def group_params

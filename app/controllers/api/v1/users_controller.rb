@@ -4,9 +4,11 @@ class Api::V1::UsersController < Api::V1::ApiController
   before_action :authenticate, only: [:update]
   before_action :set_user
 
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
+
   # GET api/v1/users/:id
   def show
-    @user ? success(json: @user.to_json(except: "api_key", include: :sport)) : failure(status: :not_found)
+    success(json: @user.to_json(except: "api_key", include: :sport))
   end
 
   # PATCH/PUT api/v1/users/:id
@@ -17,7 +19,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   private
 
   def set_user
-    @user = User.find_by_id(params[:id])
+    @user = User.find(params[:id])
   end
 
   def user_params

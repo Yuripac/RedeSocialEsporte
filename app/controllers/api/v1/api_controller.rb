@@ -1,6 +1,8 @@
 class Api::V1::ApiController < ActionController::Base
 
   protect_from_forgery with: :null_session
+  
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   def authenticate
     api_key = request.headers['X-Api-Key']
@@ -19,6 +21,10 @@ class Api::V1::ApiController < ActionController::Base
     options = { status: status, json: error }
 
     render options
+  end
+
+  def not_found
+    failure(status: :not_found)
   end
 
 end

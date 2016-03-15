@@ -20,16 +20,14 @@ class Activity < ActiveRecord::Base
 
   def to_performed_activity
     performed_activity = self.attributes
-    performed_activity["performed_at"] = performed_activity.delete "date"
+    performed_activity["performed_at"] = performed_activity.delete("date")
     performed_activity
   end
 
   def self.destroy_all_expired
     activities = self.expired
-
-    ActiveRecord::Base.transaction do
-      activities.destroy_all
-    end
+    
+    ActiveRecord::Base.transaction { activities.destroy_all }
   end
 
 end

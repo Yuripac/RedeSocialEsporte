@@ -1,9 +1,13 @@
 class User < ActiveRecord::Base
 
-  has_many :memberships, dependent: :destroy
+  has_many :memberships
   has_many :membership_groups, through: :memberships, source: :group
 
-  has_many :groups, dependent: :destroy
+  has_many :owner_memberships, ->{ where(owner: true) }, class_name: "Membership"
+  has_many :groups, through: :owner_memberships, source: :group
+
+  has_many :participations
+  has_many :participation_activities, through: :participations, source: :activity
 
   belongs_to :sport
 

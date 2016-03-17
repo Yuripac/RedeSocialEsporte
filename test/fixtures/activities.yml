@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   latitude: MyString
   longitude: MyString
   address: MyString
@@ -8,8 +9,9 @@ one:
   date: <%= Time.zone.now + 5.day %>
 
 two:
+  id: 2
   latitude: MyString
   longitude: MyString
   address: MyString
-  group_id: 1
+  group_id: 2
   date: <%= Time.zone.now + 5.day %>

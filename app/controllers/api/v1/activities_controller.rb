@@ -4,7 +4,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   before_action :authenticate, except: :show
 
   include Api::V1::VerifyGroupOwner
-  
+
   # POST api/v1/groups/:id/activity
   def create
     failure(status: :bad_request, error: "Group already has a activity") and return if @group.activity
@@ -21,6 +21,28 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   # GET api/v1/groups/:id/activity
   def show
     success(json: @group.activity)
+  end
+
+  # GET api/v1/groups/:id/activity/join
+  def join
+    participation = @group.activity.participations.build(user: @user)
+
+    if participation.save
+      success
+    else
+      failure(status: :bad_request, error: participation.errors.messages)
+    end
+  end
+
+  # GET api/v1/groups/:id/activity/unjoin
+  def unjoin
+    participation = @group.activity.participations.find_by!(user_id: @user.id)
+
+    if participation.destroy
+      success
+    else
+      failure(status: :bad_request, error: participation.errors.messages)
+    end
   end
 
   # PATCH/PUT api/v1/groups/:id/activity

@@ -30,8 +30,11 @@ Rails.application.routes.draw do
       resources :sports, only: [:index]
 
       resources :groups, except: [:new, :edit] do
-        resource :activity, except: [:new, :edit]
-        resources :performed_activities, only: :index
+
+        resource :activity, except: [:new, :edit] do          
+          get "join"
+          get "unjoin"
+        end
 
         get "my", on: :collection
         member do

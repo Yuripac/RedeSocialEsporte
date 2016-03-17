@@ -44,21 +44,23 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1/join
   def join
-    unless @group.members.include?(@user)
-      @group.members << @user
+    membership = @group.memberships.build(user: @user)
+
+    if membership.save
       success
     else
-      failure(status: :bad_request)
+      failure(status: :bad_request, error: membership.errors.messages)
     end
   end
 
   # GET /api/v1/groups/1/unjoin
   def unjoin
-    if @group.members.include?(@user) && !@group.owned_by?(@user)
-      @group.members.destroy(@user)
+    membership = @group.memberships.find_by!(user_id: @user.id)
+
+    if membership.destroy
       success
     else
-      failure(status: :bad_request)
+      failure(status: :bad_request, error: membership.errors.messages)
     end
   end
 

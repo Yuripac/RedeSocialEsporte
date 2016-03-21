@@ -6,6 +6,7 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
     @group1 = groups(:one)
     @group4 = groups(:four)
 
+    @activity = activities(:one)
     # sets a user
     request.headers['X-Api-Key'] = users(:one).api_key
   end
@@ -51,11 +52,31 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
 
   test "should create group" do
     assert_difference('Group.count') do
-      post :create, group: {
-                             sport_id: @group1.sport_id,
-                             description: @group1.description,
-                             name: @group1.name
-                           }
+      post :create,
+           group: {
+             sport_id:    @group1.sport_id,
+             description: @group1.description,
+             name:        @group1.name
+           }
+    end
+
+    assert_response :created
+  end
+
+  test "should create group and activity" do
+    assert_difference(["Group.count", "Activity.count"]) do
+      post :create,
+           group: {
+             sport_id:    @group1.sport_id,
+             description: @group1.description,
+             name:        @group1.name
+           },
+           activity: {
+             latitude:  @activity.latitude,
+             longitude: @activity.longitude,
+             address:   @activity.address,
+             date:      @activity.date
+           }
     end
 
     assert_response :created
@@ -69,11 +90,12 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
   end
 
   test "should update group" do
-    patch :update, id: @group1, group: {
-                                         sport_id: @group1.sport_id,
-                                         description: @group1.description,
-                                         name: @group1.name
-                                       }
+    patch :update, id: @group1,
+          group: {
+            sport_id:    @group1.sport_id,
+            description: @group1.description,
+            name:        @group1.name
+          }
     assert_response :success
   end
 

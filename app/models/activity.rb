@@ -11,6 +11,7 @@ class Activity < ActiveRecord::Base
   validates_presence_of :latitude, :longitude, :address, :date, :group
 
   after_create { |activity| activity.participants << activity.group.owner }
+
   before_destroy :move_expired_activity
 
   def expired?

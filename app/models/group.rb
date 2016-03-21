@@ -11,7 +11,7 @@ class Group < ActiveRecord::Base
 
   belongs_to :sport
 
-  validates_presence_of :name, :description, :sport, :owner
+  validates_presence_of :name, :description, :sport
 
   def owned_by?(user)
     owner == user

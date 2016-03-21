@@ -4,12 +4,22 @@ one:
   id: 1
   name: MyString
   description: MyText
-  user_id: 1
   sport_id: 1
 
 two:
   id: 2
   name: MyString
   description: MyText
-  user_id: 2
   sport_id: 2
+
+three:
+  id: 3
+  name: MyString
+  description: MyText
+  sport_id: 3
+
+four:
+  id: 4
+  name: MyString
+  description: MyText
+  sport_id: 4

@@ -1,15 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   latitude: MyString
   longitude: MyString
   address: MyString
   group_id: 1
-  performed_at: 2016-03-12 13:54:37
+  performed_at: <%= 5.days.ago %>
 
 two:
+  id: 2
   latitude: MyString
   longitude: MyString
   address: MyString
   group_id: 1
-  performed_at: 2016-03-12 13:54:37
+  performed_at: <%= 5.days.ago %>

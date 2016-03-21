@@ -8,12 +8,12 @@ class Membership < ActiveRecord::Base
   validates_presence_of :user, :group
   validates_uniqueness_of :user_id, scope: :group_id
 
-  # before_destroy :delete_group_if_user_is_owner
+  after_destroy :destroy_group_if_user_is_owner
 
-  # private
+  private
 
-  # def delete_group_if_user_is_owner
-  #   self.group.delete if self.group.owned_by?(self.user)
-  # end
+  def destroy_group_if_user_is_owner
+    self.group.destroy if self.owner
+  end
 
 end

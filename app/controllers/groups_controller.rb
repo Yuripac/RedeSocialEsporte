@@ -16,8 +16,9 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/join
   def join
-    unless @group.members.include?(current_user)
-      @group.members << current_user
+    membership = @group.memberships.build(user: current_user)
+
+    if membership.save
       flash[:notice] = "You joined a group"
     else
       flash[:alert] = "You can't join"
@@ -53,7 +54,7 @@ class GroupsController < ApplicationController
 
   # POST /groups
   def create
-    @group  = current_user.groups.build(group_params)
+    @group = Group.create(group_params.merge({owner: current_user}))
 
     if @group.save
       redirect_to @group, notice: 'Group was successfully created.'

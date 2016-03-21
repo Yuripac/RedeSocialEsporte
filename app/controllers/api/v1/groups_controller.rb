@@ -15,7 +15,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # POST /api/v1/groups
   def create
-    group    = @user.groups.build(group_params)
+    group = Group.new(group_params.merge({ owner: @user }))
     activity = group.build_activity(activity_params)
 
     if group.save

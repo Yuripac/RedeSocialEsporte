@@ -1,14 +1,14 @@
 class Api::V1::ActivitiesController < Api::V1::ApiController
 
   before_action :set_group
+  before_action :set_activity
   before_action :authenticate, except: :show
 
   include Api::V1::VerifyGroupOwner
 
   # POST api/v1/groups/:id/activity
   def create
-    failure(status: :bad_request, error: "Group already has a activity") and return if @group.activity
-
+    failure(status: :bad_request, error: "Group already has a activity") and return if @activity
     activity = @group.build_activity(activity_params)
 
     if activity.save
@@ -20,12 +20,19 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # GET api/v1/groups/:id/activity
   def show
-    success(json: @group.activity)
+    success(json: @activity)
+  end
+
+  # GET api/v1/groups/:id/activity/participants
+  def participants
+    failure(status: :bad_request, error: "Group hasn't a activity") and return unless @activity
+
+    success(json: @activity.participants.to_json(except: "api_key", include: :sport))
   end
 
   # GET api/v1/groups/:id/activity/join
   def join
-    participation = @group.activity.participations.build(user: @user)
+    participation = @activity.participations.build(user: @user)
 
     if participation.save
       success
@@ -36,7 +43,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # GET api/v1/groups/:id/activity/unjoin
   def unjoin
-    participation = @group.activity.participations.find_by!(user_id: @user.id)
+    participation = @activity.participations.find_by!(user_id: @user.id)
 
     if participation.destroy
       success
@@ -47,20 +54,20 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # PATCH/PUT api/v1/groups/:id/activity
   def update
-    failure(status: :bad_request, error: "Group hasn't a activity") and return unless @group.activity
+    failure(status: :bad_request, error: "Group hasn't a activity") and return unless @activity
 
-    if @group.activity.update(activity_params)
+    if @activity.update(activity_params)
       success
     else
-      failure(status: :bad_request, error: @group.activity.errors.messages)
+      failure(status: :bad_request, error: @activity.errors.messages)
     end
   end
 
   # DELETE api/v1/groups/:id/activity
   def destroy
-    failure(status: :bad_request, error: "Group hasn't a activity") and return unless @group.activity
+    failure(status: :bad_request, error: "Group hasn't a activity") and return unless @activity
 
-    @group.activity.destroy
+    @activity.destroy
     success
   end
 
@@ -68,6 +75,10 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   def set_group
     @group = Group.find(params["group_id"])
+  end
+
+  def set_activity
+    @activity = @group.activity
   end
 
   def activity_params

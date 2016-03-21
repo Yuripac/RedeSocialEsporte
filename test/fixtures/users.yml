@@ -15,5 +15,5 @@ two:
   name: MyString
   email: MyString
   uid: MyString
-  provider: MyString    
+  provider: MyString
   api_key: 654321cba

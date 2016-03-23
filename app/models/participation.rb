@@ -4,7 +4,8 @@ class Participation < ActiveRecord::Base
   belongs_to :activity
 
   validates_presence_of :user, :activity
-  validates_uniqueness_of :user_id, scope: :activity_id
+  validates_uniqueness_of :user_id, scope: :activity_id,
+    message: "Already participates"
   validate :user_must_be_member_of_the_group
 
   after_destroy :destroy_activity_if_user_is_owner

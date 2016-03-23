@@ -1,6 +1,6 @@
 class Activity < ActiveRecord::Base
 
-  has_many :participations, dependent: :destroy
+  has_many :participations, dependent: :delete_all
   has_many :participants, through: :participations, source: :user
 
   belongs_to :group

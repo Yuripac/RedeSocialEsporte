@@ -100,7 +100,7 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
   end
 
   test "should destroy group" do
-    skip
+    # skip
     assert_difference('Group.count', -1) do
       delete :destroy, id: @group1
     end

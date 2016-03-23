@@ -3,7 +3,7 @@ require 'test_helper'
 class GroupsControllerTest < ActionController::TestCase
 
   setup do
-    @group1 = groups(:one)    
+    @group1 = groups(:one)
     @group4 = groups(:four)
 
     # Needs this to use current_user
@@ -69,7 +69,7 @@ class GroupsControllerTest < ActionController::TestCase
   end
 
   test "should destroy group" do
-    skip
+    # skip
     assert_difference('Group.count', -1) do
       delete :destroy, id: @group1
     end

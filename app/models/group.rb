@@ -1,6 +1,6 @@
 class Group < ActiveRecord::Base
 
-  has_many :memberships, dependent: :destroy
+  has_many :memberships, dependent: :delete_all
   has_many :members, through: :memberships, source: :user
 
   has_one  :owner_membership, ->{ where(owner: true) }, class_name: "Membership"

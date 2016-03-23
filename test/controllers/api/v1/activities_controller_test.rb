@@ -68,7 +68,7 @@ class Api::V1::ActivitiesControllerTest < ActionController::TestCase
   end
 
   test "should destroy activity" do
-    skip
+    # skip
     assert_difference('Activity.count', -1) do
       delete :destroy, group_id: @activity1.group, id: @activity1
     end

@@ -4,13 +4,13 @@ class Activity < ActiveRecord::Base
   has_many :participants, through: :participations, source: :user
 
   belongs_to :group
-  delegate :sport, :owner, :owned_by?, to: :group
+  delegate :sport, :admins, :managed_by?, to: :group
 
   scope :expired, ->{ where(["date < ?", Time.zone.now]) }
 
   validates_presence_of :latitude, :longitude, :address, :date, :group
 
-  after_create { |activity| activity.participants << activity.group.owner }
+  # after_create { |activity| activity.participants << activity.admins }
 
   before_destroy :move_expired_activity
 

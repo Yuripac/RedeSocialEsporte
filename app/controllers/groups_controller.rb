@@ -6,12 +6,12 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.includes(:members, :owner, :sport)
+    @groups = Group.includes(:members, :admin, :sport)
   end
 
   # GET /groups/my
   def my
-    @groups = current_user.membership_groups.includes(:members, :owner, :sport)
+    @groups = current_user.membership_groups.includes(:members, :admins, :sport)
   end
 
   # GET /groups/1/join

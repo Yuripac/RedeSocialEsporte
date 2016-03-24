@@ -4,7 +4,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   before_action :set_group,         only:   [:join, :show, :members, :unjoin, :update, :destroy]
   before_action :authenticate,      except: [:index, :show, :members]
 
-  include Api::V1::VerifyGroupOwner
+  include Api::V1::VerifyGroupAdmin
 
   # GET /api/v1/groups
   def index
@@ -15,7 +15,9 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # POST /api/v1/groups
   def create
-    group = Group.new(group_params.merge({ owner: @user }))
+    group = Group.new(group_params)
+    group.admins << @user
+
     activity = group.build_activity(activity_params)
 
     if group.save
@@ -66,6 +68,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # PATCH/PUT /api/v1/groups/1
   def update
+    # byebug
     if @group.update(group_params)
       success
     else

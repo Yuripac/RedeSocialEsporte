@@ -5,7 +5,8 @@ class Group < ActiveRecord::Base
 
   has_many :admins, ->{ Membership.management }, through: :memberships, source: :user
 
-  has_one  :activity            , dependent: :destroy
+  has_one  :activity, dependent: :destroy
+
   has_many :performed_activities, dependent: :destroy
 
   belongs_to :sport

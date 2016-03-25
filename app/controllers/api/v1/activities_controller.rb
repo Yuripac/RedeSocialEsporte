@@ -4,11 +4,11 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   before_action :set_activity
   before_action :authenticate, except: [:show, :participants]
 
-  include Api::V1::VerifyGroupAdmin
+  before_action :verify_has_activity, only: [:update, :destroy, :participants]
+  before_action :verify_group_admin,  only: [:update, :destroy, :create]
 
   # POST api/v1/groups/:id/activity
   def create
-    failure(status: :bad_request, error: "Group already has a activity") and return if @activity
     activity = @group.build_activity(activity_params)
 
     if activity.save
@@ -25,8 +25,6 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # GET api/v1/groups/:id/activity/participants
   def participants
-    failure(status: :bad_request, error: "Group hasn't a activity") and return unless @activity
-
     success(json: @activity.participants.to_json(except: "api_key", include: :sport))
   end
 
@@ -54,8 +52,6 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # PATCH/PUT api/v1/groups/:id/activity
   def update
-    failure(status: :bad_request, error: "Group hasn't a activity") and return unless @activity
-
     if @activity.update(activity_params)
       success
     else
@@ -65,8 +61,6 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # DELETE api/v1/groups/:id/activity
   def destroy
-    failure(status: :bad_request, error: "Group hasn't a activity") and return unless @activity
-
     @activity.destroy
     success
   end
@@ -83,6 +77,18 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   def activity_params
     params.require(:activity).permit(:latitude, :longitude, :address, :date)
+  end
+
+  def verify_has_activity
+    unless @activity
+      failure(status: :bad_request, error: "Group hasn't a activity")
+    end
+  end
+
+  def verify_group_admin
+    unless @group.managed_by?(@user)
+      failure(error: "User isn't authorized to do that.")
+    end
   end
 
 end

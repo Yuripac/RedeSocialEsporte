@@ -1,10 +1,9 @@
 
 class Api::V1::GroupsController < Api::V1::ApiController
 
-  before_action :set_group,         only:   [:join, :show, :members, :unjoin, :update, :destroy]
-  before_action :authenticate,      except: [:index, :show, :members]
-
-  include Api::V1::VerifyGroupAdmin
+  before_action :set_group, only: [:join, :show, :members, :unjoin, :update, :destroy]
+  before_action :authenticate, except: [:index, :show, :members]
+  before_action :verify_group_admin, only: [:update, :destroy]
 
   # GET /api/v1/groups
   def index
@@ -18,10 +17,9 @@ class Api::V1::GroupsController < Api::V1::ApiController
     group = Group.new(group_params)
     group.admins << @user
 
-    activity = group.build_activity(activity_params)
+    group.build_activity(activity_params)
 
     if group.save
-      activity.save
       success(status: :created)
     else
       failure(status: :bad_request, error: group.errors.messages)
@@ -68,7 +66,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # PATCH/PUT /api/v1/groups/1
   def update
-    # byebug
     if @group.update(group_params)
       success
     else
@@ -95,6 +92,12 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   def activity_params
     params.fetch(:activity, {}).permit(:latitude, :longitude, :address, :date)
+  end
+
+  def verify_group_admin
+    unless @group.managed_by?(@user)
+      failure(error: "User isn't authorized to do that.")
+    end
   end
 
 end

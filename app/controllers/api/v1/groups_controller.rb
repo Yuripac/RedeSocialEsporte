@@ -55,9 +55,11 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1/unjoin
   def unjoin
-    membership = @group.memberships.find_by!(user_id: @user.id)
+    membership = @group.memberships.find_by(user_id: @user.id)
 
-    if membership.destroy
+    if membership.nil?
+      failure(status: :bad_request, error: "User is not a member")
+    elsif membership.destroy
       success
     else
       failure(status: :bad_request, error: membership.errors.messages)

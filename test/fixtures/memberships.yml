@@ -3,29 +3,29 @@
 one:
   user_id: 1
   group_id: 1
-  owner: true
   admin: true
 
 two:
   user_id: 2
   group_id: 2
-  owner: true
   admin: true
 
 three:
   user_id: 1
   group_id: 2
-  owner: false
   admin: false
 
 four:
   user_id: 2
   group_id: 1
-  owner: false
   admin: false
 
 five:
   user_id: 1
   group_id: 3
-  owner: true
+  admin: false
+
+six:
+  user_id: 1
+  group_id: 5
   admin: true

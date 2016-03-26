@@ -23,3 +23,15 @@ four:
   name: MyString
   description: MyText
   sport_id: 4
+
+five:
+  id: 5
+  name: MyString
+  description: MyText
+  sport_id: 1
+
+six:
+  id: 6
+  name: MyString
+  description: MyText
+  sport_id: 2

@@ -41,9 +41,11 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # GET api/v1/groups/:id/activity/unjoin
   def unjoin
-    participation = @activity.participations.find_by!(user_id: @user.id)
+    participation = @activity.participations.find_by(user_id: @user.id)
 
-    if participation.destroy
+    if participation.nil?
+      failure(status: :bad_request, error: "User is not a participant")
+    elsif participation.destroy
       success
     else
       failure(status: :bad_request, error: participation.errors.messages)

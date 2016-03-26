@@ -26,7 +26,6 @@ class Activity < ActiveRecord::Base
 
   def self.destroy_all_expired
     activities = self.expired
-
     ActiveRecord::Base.transaction { activities.destroy_all }
   end
 

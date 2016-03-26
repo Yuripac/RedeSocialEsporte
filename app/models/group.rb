@@ -3,7 +3,8 @@ class Group < ActiveRecord::Base
   has_many :memberships, dependent: :delete_all
   has_many :members, through: :memberships, source: :user
 
-  has_many :admins, ->{ Membership.management }, through: :memberships, source: :user
+  has_many :admins, ->{ Membership.management }, through: :memberships,
+    source: :user
 
   has_one  :activity, dependent: :destroy
 

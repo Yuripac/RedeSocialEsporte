@@ -18,4 +18,8 @@ class Group < ActiveRecord::Base
     self.admins.include?(user)
   end
 
+  def admin_ids
+    admins.map(&:id)
+  end
+
 end

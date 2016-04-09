@@ -26,7 +26,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1
   def show
-    # byebug
     success(json: @group)
   end
 

@@ -1,14 +1,13 @@
 
 class Api::V1::GroupsController < Api::V1::ApiController
 
-  before_action :set_group, only: [:join, :show, :members, :unjoin, :update, :destroy]
-  before_action :authenticate, except: [:index, :show, :members]
+  before_action :set_group, only: [:join, :show, :members, :admins, :unjoin, :update, :destroy]
+  before_action :authenticate, except: [:index, :show, :members, :admins]
   before_action :verify_group_admin, only: [:update, :destroy]
 
   # GET /api/v1/groups
   def index
-    groups = Group.includes(:sport, :activity)
-    success(json: groups)
+    success(json: Group.all)
   end
 
   # POST /api/v1/groups
@@ -27,6 +26,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1
   def show
+    # byebug
     success(json: @group)
   end
 
@@ -39,6 +39,10 @@ class Api::V1::GroupsController < Api::V1::ApiController
   # GET /api/v1/groups/:id/members
   def members
     success(json: @group.members, root: :users)
+  end
+
+  def admins
+    success(json: @group.admins, root: :admins)
   end
 
   # GET /api/v1/groups/1/join

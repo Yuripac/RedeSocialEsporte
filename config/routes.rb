@@ -4,22 +4,6 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-  # Routes to login with a provider
-  get "/auth/:provider/callback", to: "login#create", as: "auth_callback"
-  # get "/auth/failure", to: "login#failure", as: "auth_failure"
-  delete "/logout", to: "login#destroy", as: "logout"
-
-  resources :groups do
-    get "my", on: :collection
-
-    member do
-      get "members"
-      get "join"
-      get "unjoin"
-    end
-  end
-
-  resources :users, only: [:show, :edit, :update, :destroy]
   #---------------API----------------------------
 
   namespace :api, defaults: {format: "json"} do
@@ -41,6 +25,7 @@ Rails.application.routes.draw do
 
         get "my", on: :collection
         member do
+          get "admins"
           get "members"
           get "join"
           get "unjoin"

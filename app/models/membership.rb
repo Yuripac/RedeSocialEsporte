@@ -7,7 +7,7 @@ class Membership < ActiveRecord::Base
 
   validates_presence_of :user, :group
   validates_uniqueness_of :user_id, scope: :group_id,
-    message: "Already is a member"
+    message: "already is a member"
 
   after_destroy :destroy_group_if_has_no_admin
 

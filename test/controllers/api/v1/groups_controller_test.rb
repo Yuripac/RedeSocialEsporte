@@ -13,13 +13,6 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
     request.headers["X-Api-Key"] = users(:one).api_key
   end
 
-  test "should fails when wrong api_key" do
-    request.headers["X-Api-Key"] = "123123123"
-    get "my"
-
-    assert_response :unauthorized
-  end
-
   test "should get index" do
     get :index
     assert_response :success
@@ -50,7 +43,9 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
   end
 
   test "should fail when the user already joins" do
-    get :join, id: @joined_group
+    assert_no_difference("Membership.count") do
+      get :join, id: @joined_group
+    end
 
     assert_response :bad_request
   end
@@ -64,7 +59,9 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
   end
 
   test "should fail when the user not joins" do
-    get :unjoin, id: @not_joined_group
+    assert_no_difference("Membership.count") do
+      get :unjoin, id: @not_joined_group
+    end
 
     assert_response :bad_request
   end
@@ -137,7 +134,9 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
   end
 
   test "should fails when a not admin tries to destroys a group" do
-    delete :destroy, id: @joined_group
+    assert_no_difference("Group.count") do
+      delete :destroy, id: @joined_group
+    end
 
     assert_response :unauthorized
   end

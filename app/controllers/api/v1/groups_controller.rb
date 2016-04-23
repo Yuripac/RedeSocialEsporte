@@ -13,7 +13,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   # POST /api/v1/groups
   def create
     group = Group.new(group_params)
-    group.admins << @user
+    group.admins << @current_user
 
     group.build_activity(activity_params)
 
@@ -31,7 +31,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/my
   def my
-    groups = @user.membership_groups.includes(:sport, :activity)
+    groups = @current_user.membership_groups.includes(:sport, :activity)
     success
   end
 
@@ -46,7 +46,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1/join
   def join
-    membership = @group.memberships.build(user: @user)
+    membership = @group.memberships.build(user: @current_user)
 
     if membership.save
       success
@@ -57,10 +57,10 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   # GET /api/v1/groups/1/unjoin
   def unjoin
-    membership = @group.memberships.find_by(user_id: @user.id)
+    membership = @group.memberships.find_by(user_id: @current_user.id)
 
     if membership.nil?
-      failure(status: :bad_request, error: "User is not a member")
+      failure(status: :bad_request, error: "user is not a member")
     elsif membership.destroy
       success
     else
@@ -99,7 +99,7 @@ class Api::V1::GroupsController < Api::V1::ApiController
   end
 
   def verify_group_admin
-    unless @group.managed_by?(@user)
+    unless @group.managed_by?(@current_user)
       failure(error: "User isn't authorized to do that.")
     end
   end

@@ -4,11 +4,14 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-  namespace :api, defaults: {format: "json"} do
+namespace :api, defaults: {format: "json"} do
     namespace :v1 do
       get "login", to: "login#create"
 
-      resources :users, only: [:show, :update]
+      resources :users, only: [:show, :update] do
+        get "follow",   on: :member
+        get "unfollow", on: :member
+      end
       resources :sports, only: :index
 
       resources :groups, except: [:new, :edit] do

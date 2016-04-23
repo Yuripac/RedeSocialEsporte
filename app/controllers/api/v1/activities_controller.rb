@@ -30,7 +30,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # GET api/v1/groups/:id/activity/join
   def join
-    participation = @activity.participations.build(user: @user)
+    participation = @activity.participations.build(user: @current_user)
 
     if participation.save
       success
@@ -41,7 +41,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
 
   # GET api/v1/groups/:id/activity/unjoin
   def unjoin
-    participation = @activity.participations.find_by(user_id: @user.id)
+    participation = @activity.participations.find_by(user_id: @current_user.id)
 
     if participation.nil?
       failure(status: :bad_request, error: "User is not a participant")
@@ -88,7 +88,7 @@ class Api::V1::ActivitiesController < Api::V1::ApiController
   end
 
   def verify_group_admin
-    unless @group.managed_by?(@user)
+    unless @group.managed_by?(@current_user)
       failure(error: "User isn't authorized to do that.")
     end
   end

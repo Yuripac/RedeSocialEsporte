@@ -9,9 +9,9 @@ class Api::V1::ApiController < ActionController::Base
 
   def authenticate
     api_key = request.headers['X-Api-Key']
-    @user = User.where(api_key: api_key).first if api_key
+    @current_user = User.where(api_key: api_key).first if api_key
 
-    failure(error: "x-api-key is wrong") unless @user
+    failure(error: "x-api-key is wrong") unless @current_user
   end
 
   def success(opts = {})

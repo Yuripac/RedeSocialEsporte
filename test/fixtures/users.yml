@@ -7,7 +7,7 @@ one:
   email: MyString
   uid: MyString
   provider: MyString
-  api_key: abc123456
+  api_key: test1
 
 two:
   id: 2
@@ -16,4 +16,13 @@ two:
   email: MyString
   uid: MyString
   provider: MyString
-  api_key: 654321cba
+  api_key: test2
+
+three:
+  id: 3
+  sport_id: 1
+  name: MyString
+  email: MyString
+  uid: MyString
+  provider: MyString
+  api_key: teste3

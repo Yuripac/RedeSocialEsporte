@@ -1,8 +1,7 @@
 
 class Api::V1::UsersController < Api::V1::ApiController
 
-  before_action :authenticate, only: [:update, :follow, :unfollow,
-     :followers, :following]
+  before_action :authenticate, except: :show
   before_action :set_user, except: [:followers, :following]
 
   rescue_from ActiveRecord::RecordNotFound, with: :not_found

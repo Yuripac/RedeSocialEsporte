@@ -1,8 +1,9 @@
 
 class Api::V1::UsersController < Api::V1::ApiController
 
-  before_action :authenticate, only: [:update, :follow, :unfollow]
-  before_action :set_user
+  before_action :authenticate, only: [:update, :follow, :unfollow,
+     :followers, :following]
+  before_action :set_user, except: [:followers, :following]
 
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
@@ -32,6 +33,14 @@ class Api::V1::UsersController < Api::V1::ApiController
     else
       failure(status: :bad_request, error: relationship.errors.messages)
     end
+  end
+
+  def followers
+    success(json: @current_user.followers)
+  end
+
+  def following
+    success(json: @current_user.following)
   end
 
   # PATCH/PUT api/v1/users/:id

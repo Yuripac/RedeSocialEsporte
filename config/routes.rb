@@ -9,8 +9,10 @@ namespace :api, defaults: {format: "json"} do
       get "login", to: "login#create"
 
       resources :users, only: [:show, :update] do
-        get "follow",   on: :member
-        get "unfollow", on: :member
+        get "follow",    on: :member
+        get "unfollow",  on: :member
+        get "followers", on: :collection
+        get "following", on: :collection
       end
       resources :sports, only: :index
 

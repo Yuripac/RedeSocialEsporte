@@ -42,6 +42,20 @@ class Api::V1::UsersControllerTest < ActionController::TestCase
     assert_response :bad_request
   end
 
+  test "should get followers" do
+    get :followers
+    assert_response :success
+
+    assert_not_nil response.body
+  end
+
+  test "should get following" do
+    get :following
+    assert_response :success
+
+    assert_not_nil response.body
+  end
+
   test "should show user" do
     get :show, id: @not_followed_user
     assert_response :success

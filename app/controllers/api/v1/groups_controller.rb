@@ -5,14 +5,14 @@ class Api::V1::GroupsController < Api::V1::ApiController
   before_action :authenticate, except: [:index, :show, :members, :admins]
   before_action :verify_group_admin, only: [:update, :destroy]
 
-  # GET /api/v1/groups
   def index
     success(json: Group.all)
   end
 
-  # POST /api/v1/groups
   def create
-    group = Group.new(group_params)
+    group = Group.new group_params
+    group.sport_id = sport_params[:id]
+
     group.admins << @current_user
 
     group.build_activity(activity_params)
@@ -24,18 +24,15 @@ class Api::V1::GroupsController < Api::V1::ApiController
     end
   end
 
-  # GET /api/v1/groups/1
   def show
     success(json: @group)
   end
 
-  # GET /api/v1/groups/my
   def my
     groups = @current_user.membership_groups.includes(:sport, :activity)
-    success
+    success(json: groups)
   end
 
-  # GET /api/v1/groups/:id/members
   def members
     success(json: @group.members, root: :users)
   end
@@ -44,7 +41,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
     success(json: @group.admins, root: :admins)
   end
 
-  # GET /api/v1/groups/1/join
   def join
     membership = @group.memberships.build(user: @current_user)
 
@@ -55,7 +51,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
     end
   end
 
-  # GET /api/v1/groups/1/unjoin
   def unjoin
     membership = @group.memberships.find_by(user_id: @current_user.id)
 
@@ -68,7 +63,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
     end
   end
 
-  # PATCH/PUT /api/v1/groups/1
   def update
     if @group.update(group_params)
       success
@@ -77,7 +71,6 @@ class Api::V1::GroupsController < Api::V1::ApiController
     end
   end
 
-  # DELETE /api/v1/groups/1
   def destroy
     @group.destroy
     success
@@ -85,13 +78,16 @@ class Api::V1::GroupsController < Api::V1::ApiController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_group
     @group = Group.find(params[:id])
   end
 
   def group_params
-    params.require(:group).permit(:name, :description, :sport_id)
+    params.require(:group).permit(:name, :description, :activity)
+  end
+
+  def sport_params
+    params.require(:sport).permit(:id, :name)
   end
 
   def activity_params

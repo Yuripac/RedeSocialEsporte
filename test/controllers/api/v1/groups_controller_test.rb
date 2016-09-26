@@ -69,10 +69,11 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
   test "should create group" do
     assert_difference('Group.count') do
       post :create,
-           group: {
-             sport_id:    @adm_group.sport_id,
+           group: {             
              description: @adm_group.description,
              name:        @adm_group.name
+           }, sport: {
+             id: @adm_group.sport_id
            }
     end
 
@@ -83,9 +84,11 @@ class Api::V1::GroupsControllerTest < ActionController::TestCase
     assert_difference(["Group.count", "Activity.count"]) do
       post :create,
            group: {
-             sport_id:    @adm_group.sport_id,
              description: @adm_group.description,
              name:        @adm_group.name
+           },
+           sport: {
+            id: @adm_group.sport_id
            },
            activity: {
              latitude:  @activity.latitude,

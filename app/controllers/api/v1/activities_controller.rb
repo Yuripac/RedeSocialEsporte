@@ -1,11 +1,15 @@
 class Api::V1::ActivitiesController < Api::V1::ApiController
 
-  before_action :set_group
-  before_action :set_activity
-  before_action :authenticate, except: [:show, :participants]
+  before_action :set_group,    except: :index
+  before_action :set_activity, except: :index
+  before_action :authenticate, except: [:index, :show, :participants]
 
   before_action :verify_has_activity, only: [:update, :destroy, :participants]
   before_action :verify_group_admin,  only: [:update, :destroy, :create]
+
+  def index
+    success(json: Activity.all)
+  end
 
   # POST api/v1/groups/:id/activity
   def create

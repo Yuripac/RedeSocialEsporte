@@ -5,7 +5,7 @@ class Api::V1::ApiController < ActionController::Base
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
 
-  rescue_from ActiveRecord::RecordNotFound2, with: :not_found
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   def authenticate
     api_key = request.headers['X-Api-Key']

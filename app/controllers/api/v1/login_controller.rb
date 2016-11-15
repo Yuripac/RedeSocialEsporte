@@ -25,7 +25,7 @@ class Api::V1::LoginController < Api::V1::ApiController
     app_token    = Rails.application.secrets.facebook["app_token"]
     app_id       = Rails.application.secrets.facebook["app_id"]
     access_token = request.headers["X-Access-Token"]
-
+    
     begin
       info = Koala::Facebook::API.new(app_token).debug_token(access_token)
       unless info["data"]["is_valid"]

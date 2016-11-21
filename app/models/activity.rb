@@ -8,7 +8,7 @@ class Activity < ActiveRecord::Base
 
   scope :expired, ->{ where(["date < ?", Time.zone.now]) }
 
-  validates_presence_of :latitude, :longitude, :address, :date, :group
+  validates_presence_of :latitude, :longitude, :date, :group
 
   after_create { |activity| activity.participants << activity.admins }
 

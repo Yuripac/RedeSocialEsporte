@@ -42,17 +42,31 @@ namespace :sample_data do
     user_yuri    = User.find_by(uid: '811642225624631')
     user_ricardo = User.find_by(uid: '4484643654646')
 
-    g = Group.create!(
+    Group.create!(
       name: 'Fort Running',
       description: 'Nós nos reunimos pelos parques e praças de Fortaleza e corremos em média 5km. Todos serão bem vindos.',
       sport: Sport.find_by(name: 'running'),
       admins: [user_yuri]
     )
 
-    g1 = Group.create!(
+    Group.create!(
       name: 'Aldeota Funcional',
       description: 'Grupo para quem procura uma boa equipe de treino funcional. Atividades ocorrem pelas praças do bairro Aldeota todos os dias.',
       sport: Sport.find_by(name: 'functional training'),
+      admins: [user_ricardo]
+    )
+
+    Group.create!(
+      name: 'Pequenos Guerreiros',
+      description: 'Treino de futebol para crianças com idade de 8 à 13 anos. ',
+      sport: Sport.find_by(name: 'football'),
+      admins: [user_ricardo]
+    )
+
+    Group.create!(
+      name: 'Basquete nas Praças',
+      description: 'Grupo destinado a procura de talentos no Basketball. Formamos atividades por toda Fortaleza.',
+      sport: Sport.find_by(name: 'basketball'),
       admins: [user_ricardo]
     )
   end
@@ -66,7 +80,7 @@ namespace :sample_data do
     group_aldeota = Group.find_by(name: 'Aldeota Funcional')
 
     group_aldeota.members << user_yuri
-    
+
     Group.all.each do |g|
       g.members << user_ana
     end

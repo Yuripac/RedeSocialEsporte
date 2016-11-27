@@ -60,7 +60,13 @@ namespace :sample_data do
   desc 'Memberships'
   task memberships: :environment do
     user_ana = User.find_by(uid: '44684254848484')
+    user_yuri = User.find_by(uid: '811642225624631')
 
+    group_fort = Group.find_by(name: 'Fort Running')
+    group_aldeota = Group.find_by(name: 'Aldeota Funcional')
+
+    group_aldeota.members << user_yuri
+    
     Group.all.each do |g|
       g.members << user_ana
     end

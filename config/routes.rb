@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :sports, only: :index
 
       resources :activities, only: :index
-      resources :groups, except: [:new, :edit] do
+      resources :groups, except: [:new, :edit] do        
         resource :activity, except: [:new, :edit] do
           get "participants"
           get "join"

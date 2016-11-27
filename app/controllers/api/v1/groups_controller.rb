@@ -6,7 +6,15 @@ class Api::V1::GroupsController < Api::V1::ApiController
   before_action :verify_group_admin, only: [:update, :destroy]
 
   def index
-    success(json: Group.all)
+    groups = Group.all
+
+    groups = if params[:sport_id]
+      Group.where(sport_id: params[:sport_id])
+    else
+      Group.all
+    end
+
+    success(json: groups)
   end
 
   def create
